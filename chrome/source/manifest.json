@@ -1,0 +1,29 @@
+{
+  "name": "Like all, plus all, favorite all",
+  "short_name": "FB like all",
+  "description": "__MSG_appDesc__",
+  "version": "1.0.1",
+  "background": {
+    "scripts": ["background.js"],
+	"persistent": false
+  },
+  "permissions": [
+      "storage",
+      "tabs", 
+      "https://plus.google.com/*",
+	  "https://www.facebook.com/*",
+	  "https://twitter.com/*"
+  ],
+  "browser_action": {
+		"default_title": "__MSG_appTooltip__",
+		"default_icon": "assets/icon-give-flower-100.png"
+  },
+  "icons": { 
+	"16": "assets/icon-give-flower-100.png",
+    "48": "assets/icon-give-flower-100.png",
+    "128":"assets/icon-give-flower-100.png" 
+  },
+  "options_page": "options.html",
+  "default_locale": "en",
+  "manifest_version": 2
+}

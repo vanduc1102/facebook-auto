@@ -1,0 +1,22 @@
+{
+	"appDesc": {
+		"message": "Like all opened posts, comments of Facebook, Google Plus, Twitter with only one Click", 
+		"description":"The description of the application, displayed in the web store."
+	},
+	"appTooltip":{
+		"message":"Like all, +1 all, favorite all",
+		"description":" The tile on browserIcon"
+	},
+	"iconTileFb":{
+		"message":"Like all",
+		"description":"Like all opend posts and comments of Facebook"
+	},
+	"iconTileGp":{
+		"message":"Plus all",
+		"description":"Like all opend posts and comments of Google Plus"
+	},
+	"iconTileTw":{
+		"message":"Favorite all",
+		"description":"Like all opend posts and comments of Twitter"
+	}
+}
