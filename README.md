@@ -1,4 +1,4 @@
-facebook-like-all
+Facebook-like-all
 =================
 An extension/add-on for chrome and firefox.
 
