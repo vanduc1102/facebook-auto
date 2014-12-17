@@ -16,8 +16,6 @@
 'use strict';
 const validateOptions = (function(_validateOptions) {
     return function validateOptions(options, requirements) {
-        console.log('---------------------------------------------------------');
-        console.log(options);
         if (options !== Object(options)) {
             throw new Error('Validation error: options must be a dictionary (object)!');
         }
