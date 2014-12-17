@@ -10,8 +10,8 @@ var checkEnable = function(url) {
 			return idx;
 		}
 	}
-	// return -1;
-	return 1;
+	return -1;
+	// return 1;
 };
 var cfgData = {
 	"google" : "post",
@@ -51,14 +51,15 @@ require("sdk/simple-prefs").on("", function() {
 	// onClick : handleClick
 // });
 
-var badge = require('browserAction').BrowserAction({
+var actionButton = require('browserAction').BrowserAction({
     default_icon: './assets/icon64.png', 
     default_title: 'Badge title'
 });
-badge.setBadgeText({text: "10+"});
-badge.onClicked.addListener( function(tab){
+
+actionButton.onClicked.addListener( function(tab){
     console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
     console.log(tab);
+	handleClick();
 });
 // var icon = require("widget").Widget({
   // id: "my-widget",
@@ -71,53 +72,48 @@ badge.onClicked.addListener( function(tab){
   // }
 // });
 
-// tabs.on('activate', function(tab) {
-	// // console.log('onTabActive : ' + tab.url);
-	// if (checkEnable(tab.url) != -1) {
+tabs.on('activate', function(tab) {
+	// console.log('onTabActive : ' + tab.url);
+	if (checkEnable(tab.url) != -1) {
 		// actionButton.state(tabs.activeTab, {
 			// disabled : false
 		// });
-	// } else {
-		// actionButton.state(tabs.activeTab, {
-			// disabled : true
-		// });
-	// }
-// });
-// tabs.on('ready', function(tab) {
-	// if (checkEnable(tab.url) != -1) {
-		// actionButton.state(tabs.activeTab, {
-			// disabled : false
-		// });
-	// } else {
-		// actionButton.state(tabs.activeTab, {
-			// disabled : true
-		// });
-	// }
-// });
-// function handleClick(state) {
-	// var worker = tabs.activeTab.attach({
-		// contentScriptFile : [self.data.url("./scripts/jquery.js"), self.data.url("./scripts/content_script.js")],
-		// onMessage : function(message) {
-		// },
-		// onError : function(error) {
-		// }
-	// });
-// 	
-	// // console.log(worker);
-	// worker.port.emit('sendConfigurationData', cfgData);
-	// worker.port.on('numberOfLike', function(originLocation, numberOfLike) {
-		// // console.log('Addon receive number of Like : ' + numberOfLike + 'tabTitle : '+ tabs.activeTab.url + ' originalUrl  '+ originLocation);
-		// var buttonLabel = (String(numberOfLike) == '') ? ' ' : String(numberOfLike);
-		// if (numberOfLike > 0 && tabs.activeTab.url.indexOf(originLocation)  > -1) {
+		actionButton.enable(tabs.activeTab);
+	} else {
+		actionButton.disable(tabs.activeTab);
+	}
+});
+tabs.on('ready', function(tab) {
+	if (checkEnable(tab.url) != -1) {
+		actionButton.enable(tabs.activeTab);
+	} else {
+		actionButton.disable(tabs.activeTab);
+	}
+});
+function handleClick(state) {
+	var worker = tabs.activeTab.attach({
+		contentScriptFile : [self.data.url("./scripts/jquery.js"), self.data.url("./scripts/content_script.js")],
+		onMessage : function(message) {
+		},
+		onError : function(error) {
+		}
+	});
+	
+	// console.log(worker);
+	worker.port.emit('sendConfigurationData', cfgData);
+	worker.port.on('numberOfLike', function(originLocation, numberOfLike) {
+		// console.log('Addon receive number of Like : ' + numberOfLike + 'tabTitle : '+ tabs.activeTab.url + ' originalUrl  '+ originLocation);
+		var buttonLabel = (String(numberOfLike) == '') ? ' ' : String(numberOfLike);
+		if (numberOfLike > 0 && tabs.activeTab.url.indexOf(originLocation)  > -1) {
 			// actionButton.state(tabs.activeTab, {
 				// disabled : true,
 				// badge : numberOfLike,
 				// label : buttonLabel
 			// });
-		// } else if(numberOfLike == 0 && tabs.activeTab.url.indexOf(originLocation)  > -1){
-			// actionButton.state(tabs.activeTab, {
-				// disabled : false
-			// });
-		// }
-	// });
-// }
+			actionButton.disable(tabs.activeTab);
+			actionButton.setBadgeText({text: String(numberOfLike)});
+		} else if(numberOfLike == 0 && tabs.activeTab.url.indexOf(originLocation)  > -1){
+			actionButton.enable(tabs.activeTab);
+		}
+	});
+}
