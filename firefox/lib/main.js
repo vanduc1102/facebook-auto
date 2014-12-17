@@ -41,7 +41,7 @@ var actionButton = require('browserAction').BrowserAction({
     default_icon: './assets/icon64.png', 
 	default_title: 'Like all'
 });
-
+actionButton.setBadgeText({text:'69'});
 actionButton.onClicked.addListener( function(tab){
 	handleClick();
 });
