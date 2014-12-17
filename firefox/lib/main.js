@@ -47,9 +47,7 @@ actionButton.onClicked.addListener( function(tab){
 });
 
 tabs.on('activate', function(tab) {
-	// console.log('onTabActive : ' + tab.url);
 	if (checkEnable(tab.url) != -1) {
-		console.log("tabs.activeTab.id : "+tabs.activeTab.id);
 		actionButton.enable(tabs.activeTab.id);
 	} else {
 		actionButton.disable(tabs.activeTab.id);
@@ -75,12 +73,13 @@ function handleClick(state) {
 	worker.port.emit('sendConfigurationData', cfgData);
 	worker.port.on('numberOfLike', function(originLocation, numberOfLike) {
 		// console.log('Addon receive number of Like : ' + numberOfLike + 'tabTitle : '+ tabs.activeTab.url + ' originalUrl  '+ originLocation);
-		var buttonLabel = (String(numberOfLike) == '') ? ' ' : String(numberOfLike);
+		var textBadage = (String(numberOfLike) == '') ? '' : String(numberOfLike);
 		if (numberOfLike > 0 && tabs.activeTab.url.indexOf(originLocation)  > -1) {
 			actionButton.disable(tabs.activeTab.id);
-			actionButton.setBadgeText({text: String(numberOfLike)});
+			actionButton.setBadgeText({text: textBadage});
 		} else if(numberOfLike == 0 && tabs.activeTab.url.indexOf(originLocation)  > -1){
 			actionButton.enable(tabs.activeTab.id);
+			actionButton.setBadgeText({text:''});
 		}
 	});
 }
