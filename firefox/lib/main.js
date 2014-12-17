@@ -58,11 +58,8 @@ tabs.on('activate', function(tab) {
 			disabled : true
 		});
 	}
-	//activatedUrl = tab.url;
-	//setButtonLabelEachSite(activatedUrl,actionButton);
 });
 tabs.on('ready', function(tab) {
-	// console.log('onTabReady : ' + tab.url);
 	if (checkEnable(tab.url) != -1) {
 		actionButton.state(tabs.activeTab, {
 			disabled : false
@@ -72,24 +69,16 @@ tabs.on('ready', function(tab) {
 			disabled : true
 		});
 	}
-	//activatedUrl = tab.url;
-	//setButtonLabelEachSite(activatedUrl,actionButton);
 });
 function handleClick(state) {
-	//console.log('state :  ');
-	//console.log(state);
-	// console.log("onClick buttonAction : ");
 	var worker = tabs.activeTab.attach({
 		contentScriptFile : [self.data.url("./scripts/jquery.js"), self.data.url("./scripts/content_script.js")],
 		onMessage : function(message) {
-			// console.log('OnMessage     :         ');
-			// console.log(message);
 		},
 		onError : function(error) {
-			// console.log("OnError   :            ");
-			// console.log(error.fileName + ":" + error.lineNumber + ": " + error);
 		}
 	});
+	
 	// console.log(worker);
 	worker.port.emit('sendConfigurationData', cfgData);
 	worker.port.on('numberOfLike', function(originLocation, numberOfLike) {
