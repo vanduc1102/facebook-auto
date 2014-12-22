@@ -22,6 +22,8 @@ html, body, button {
 }
 button {
     -moz-appearance: toolbarbutton;
+    border: none;
+    border-radius: initial;
 }
 button::-moz-focus-inner {
     border: 0;
@@ -37,8 +39,6 @@ button::-moz-focus-inner {
     left: 0;
     right: 0;
     bottom: 0;
-    border: none;
-    border-radius:initial;
 }
 /**
  * Styles created using my eyes and a peek into badge_util.cc
@@ -61,6 +61,7 @@ button::-moz-focus-inner {
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     color: #FFF;
+
     background-image: linear-gradient(
         to bottom,
         rgba(255, 255, 255, 0.624) 0,
@@ -72,6 +73,7 @@ button::-moz-focus-inner {
     border-radius: 2px;
     border-style: solid;
     border-width: 1px;
+
     /* overridden by script */
     background-color: #E00000;
     border-color:     #E00000;

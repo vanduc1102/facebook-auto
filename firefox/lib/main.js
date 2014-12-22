@@ -41,7 +41,7 @@ var actionButton = require('browserAction').BrowserAction({
     default_icon: './assets/icon64.png', 
 	default_title: 'Like all'
 });
-actionButton.setBadgeText({text:'69'});
+// actionButton.setBadgeText({text:'69'});
 actionButton.onClicked.addListener( function(tab){
 	handleClick();
 });
@@ -52,6 +52,7 @@ tabs.on('activate', function(tab) {
 	} else {
 		actionButton.disable(tabs.activeTab.id);
 	}
+	actionButton.setBadgeText({text:''});
 });
 tabs.on('ready', function(tab) {
 	if (checkEnable(tab.url) != -1) {
@@ -59,6 +60,7 @@ tabs.on('ready', function(tab) {
 	} else {
 		actionButton.disable(tabs.activeTab.id);
 	}
+	actionButton.setBadgeText({text:''});
 });
 function handleClick(state) {
 	var worker = tabs.activeTab.attach({
