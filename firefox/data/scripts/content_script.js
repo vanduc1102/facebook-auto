@@ -77,7 +77,9 @@ var mainExcetute = function(cfgData) {
 		if (happy.length <= 0) {
 			return;
 		}
+		
 		happy[0].click();
+
 		if (happy.length > 0) {
 			self.port.emit("numberOfLike", originLocation, (happy.length - 1));
 		}
