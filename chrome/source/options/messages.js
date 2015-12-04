@@ -17,7 +17,7 @@ var messages={
 		'msgAmount':'Số lượng',
 		'msgSavedSuccessfully':'Đã lưu thành công',
 		"msgAutoScrollTitle":"Tự động tải thêm",
-		"msgTime":"Lần",
+		"msgTime":"lần",
 		"msgAll":"Tất cả"
 	},
 	'en':{
@@ -38,7 +38,7 @@ var messages={
 		'msgAmount':'Amount',
 		'msgSavedSuccessfully':'Saved successfully',
 		"msgAutoScrollTitle":"Auto scroll page",
-		"msgTime":"Times",
+		"msgTime":"times",
 		"msgAll":"All"
 	},
 	'fr':{
