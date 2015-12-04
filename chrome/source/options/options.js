@@ -21,12 +21,14 @@ $(function() {
 		var facebook = document.getElementById('facebook').value;
 		var facebook_time = document.getElementById('facebook-time').value;
 		var twitter_time = document.getElementById('twitter-time').value;
+		var numberOfScroll = document.getElementById('auto-scroll-times').value;
 		chrome.storage.sync.set({
 			"google": google,
 			"google_time":google_time,
 			"facebook": facebook,
 			"facebook_time":facebook_time,
-			"twitter_time":twitter_time
+			"twitter_time":twitter_time,
+			"numberOfScroll":numberOfScroll
 		}, function() {
 			// Update status to let user know options were saved.
 			var saveStatus =$('#save-success');
@@ -45,13 +47,15 @@ $(function() {
 			"google_time": 1,
 			"facebook": "post",
 			"facebook_time": 1,
-			"twitter_time":0.8
+			"twitter_time":0.8,
+			"numberOfScroll":0
 		}, function(item) {
 			document.getElementById('google').value =item['google'];
 			document.getElementById('google-time').value =item['google_time'];
 			document.getElementById('facebook').value = item['facebook'];
 			document.getElementById('facebook-time').value = item['facebook_time'];
 			document.getElementById('twitter-time').value = item['twitter_time'];
+			document.getElementById('auto-scroll-times').value = item['numberOfScroll'];
 			// console.log(item);
 		});
 	});

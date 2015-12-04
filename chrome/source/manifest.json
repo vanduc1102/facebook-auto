@@ -2,7 +2,7 @@
   "name": "Like all, plus all, favorite all",
   "short_name": "FB like all",
   "description": "__MSG_appDesc__",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "background": {
     "scripts": ["background.js"],
 	"persistent": false

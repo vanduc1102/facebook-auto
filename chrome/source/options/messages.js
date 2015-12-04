@@ -7,7 +7,7 @@ var messages={
 		'msgComment':'bình luận',
 		'msgBoth':"cả hai",
 		'msgFavorite':'Thêm yêu thích mỗi',
-		'msgTime':'giây',
+		'msgSecond':'giây',
 		'msgChooseOption':'Tùy chọn',
 		'msgSupsponsor':'Gửi cho mình vài lon Coca Cola',
 		'msgAddicts':'Mình là một người nghiện Coca Cola',
@@ -15,7 +15,10 @@ var messages={
 		'msgLike':'Thích',
 		'msgEach':'mỗi',
 		'msgAmount':'Số lượng',
-		'msgSavedSuccessfully':'Đã lưu thành công'
+		'msgSavedSuccessfully':'Đã lưu thành công',
+		"msgAutoScrollTitle":"Tự động tải thêm",
+		"msgTime":"Lần",
+		"msgAll":"Tất cả"
 	},
 	'en':{
 		'btnSave':'Save',
@@ -25,7 +28,7 @@ var messages={
 		'msgComment':'comment',
 		'msgFavorite':'Add favorite each',
 		'msgBoth':'all',
-		'msgTime':'seconds',
+		'msgSecond':'seconds',
 		'msgChooseOption':'Choose options',
 		'msgSupsponsor':'Give me some Coke',
 		'msgAddicts':'I am a Coke addicts',
@@ -33,7 +36,10 @@ var messages={
 		'msgLike':'Like',
 		'msgEach':'each',
 		'msgAmount':'Amount',
-		'msgSavedSuccessfully':'Saved successfully'
+		'msgSavedSuccessfully':'Saved successfully',
+		"msgAutoScrollTitle":"Auto scroll page",
+		"msgTime":"Times",
+		"msgAll":"All"
 	},
 	'fr':{
 		'btnSave':'Enregistrer',
@@ -43,7 +49,7 @@ var messages={
 		'msgComment':'commentaire',
 		'msgFavorite':'Ajouter aux favoris tous les',
 		'msgBoth':'les deux',
-		'msgTime':'secondes',
+		'msgSecond':'secondes',
 		'msgChooseOption':'Choisissez options',
 		'msgSupsponsor':'Donne-moi quelques Coca-Cola',
 		'msgAddicts':'Je suis un accros de Coca-Cola',
@@ -51,7 +57,10 @@ var messages={
 		'msgLike':'J\'aime',
 		'msgEach':'chaque',
 		'msgAmount':'Montant',
-		'msgSavedSuccessfully':'Enregistré avec succès'
+		'msgSavedSuccessfully':'Enregistré avec succès',
+		"msgAutoScrollTitle":"La page de défilement automatique",
+		"msgTime":"fois",
+		"msgAll":"Tous"
 	}
 
 };

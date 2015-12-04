@@ -1,19 +1,44 @@
-//console.log('Content script running........... : '+window.location.origin);
-// Use default value color = 'red' and likesColor = true.
-//var aSocial=['www.facebook.com','plus.google.com','twitter.com'];
+var DEBUG = false;
+if(DEBUG){
+	console.log('Content script running........... : '+window.location.origin);
+}
+function LOGGER(p){
+	if(DEBUG){
+		console.log(p);
+	}
+}
 (function(){
 	chrome.storage.sync.get({
 		"google": "post",
 		"google_time":"1.0",
 		"facebook": "post",
 		"facebook_time":"1.0",
-		"twitter_time":"0.8"
+		"twitter_time":"0.8",
+		"numberOfScroll":0
 	  }, function(cfgData) {
-		//console.log('chrome extenstion storage ');
-		//console.log(cfgData);
-		executeLike(cfgData);
+	  	LOGGER(cfgData);
+		if(cfgData['numberOfScroll'] > 1){
+			autoScrollToBottom(cfgData)
+		}else{
+			executeLike(cfgData);
+		}		
 		
 	});
+	function autoScrollToBottom(cfgData){
+		var i = 0;
+		var scrollInterval = window.setInterval(function(){	
+
+			if(i == cfgData['numberOfScroll']){
+				 clearInterval(scrollInterval);
+				 executeLike(cfgData);
+			}else{
+				window.scrollTo(0,document.body.scrollHeight);
+			}
+
+			i++;
+
+		},2000);
+	}
 	function executeLike(cfgData){
 		var urlOrigin=window.location.origin;
 		var time=0;
@@ -107,7 +132,7 @@
 		for (var i = 0; i < numberOfLikes; i++) {
 			happy.push(sad_posts[i]);
 		}
-
+		LOGGER(happy);
 		function happyFn(happy, intervalTime) {
 			if (happy.length <= 0) {
 				return;
@@ -125,7 +150,7 @@
 				happyFn(happy.splice(1), intervalTime);
 			}, intervalTime);
 		}
-		//console.log('End content script running.............' + time);
-		happyFn(happy , time);
+		LOGGER(time);
+		happyFn(happy , time);		
 	};
 })();
