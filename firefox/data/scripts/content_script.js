@@ -15,7 +15,7 @@ var mainExcetute = function(cfgData) {
 		time = (parseFloat(cfgData['google_time']) < 1) ? 2000 : parseFloat(cfgData['google_time']) * 1000;
 		switch(cfgData['google']) {
 		case 'post':
-			sad_posts = $("div[id^=po-][aria-pressed='false']");
+			sad_posts = $("div[role='button'][aria-pressed='false']");
 			break;
 		case 'comment':
 			sad_posts = $("button[role='button'][aria-pressed='false'][jscontroller]");
@@ -32,24 +32,29 @@ var mainExcetute = function(cfgData) {
 	if (urlOrigin.indexOf('facebook') > -1) {
 		time = parseFloat(cfgData['facebook_time']) < 1 ? 2000 : parseFloat(cfgData['facebook_time']) * 1000;
 		switch(cfgData['facebook']) {
-		case 'post':
-			// sad_posts = $("div");
-			sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']").filter(function(index) {
-				var dataReactid = $(this).attr("data-reactid");
-				return dataReactid.length < 20;
-			});
-			break;
-		case 'comment':
-			sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']").filter(function(index) {
-				var dataReactid = $(this).attr("data-reactid");
-				return dataReactid.length >= 20;
-			});
-			break;
-		case 'both':
-			sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
-			break;
-		default:
-			break;
+			case 'post':
+						sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
+							var dataReactid = $(this).attr("data-reactroot");
+							//console.log(dataReactid.length);
+							//console.log(dataReactid);
+							//console.log("tag : ", this);
+							//console.log(dataReactid.indexOf("commnet"));
+							//TODO: need check why indexOf not work
+							return dataReactid !== undefined;
+						});
+						//console.log('Like all post : '+sad_posts.length);
+						break;
+			case 'comment':
+						sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']").filter(function(index) {
+							var dataReactid = $(this).attr("data-reactid");
+							return dataReactid.length >= 20;
+						});
+						break;
+			case 'both':
+						sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
+						break;
+			default:
+				break;
 		};
 	}
 

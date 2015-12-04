@@ -23,8 +23,11 @@
 			time = parseFloat(cfgData['google_time'])*1000;
 			switch(cfgData['google']){
 				case 'post':
-					sad_posts = $("div[id^=po-][aria-pressed='false']");
-					//console.log('Plus all post : '+sad_posts.length);
+					sad_posts = $("div[role='button'][aria-pressed='false']");
+					// console.log('Plus all post : '+sad_posts.length);
+					// for(var idx in sad_posts){
+					// 	console.log('tags : ', sad_posts[idx]);
+					// }
 					break;
 				case 'comment':
 					sad_posts = $("button[role='button'][aria-pressed='false'][jscontroller]");
@@ -49,25 +52,26 @@
 			
 			switch(cfgData['facebook']){
 				case 'post':
-					sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
-					var dataReactid = $(this).attr( "data-reactid" );
-					//console.log(dataReactid.length);
-					//console.log(dataReactid);
-					//console.log(dataReactid.indexOf("commnet"));
-					//TODO: need check why indexOf not work
-						return dataReactid.length < 20;
+					sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
+						var dataReactid = $(this).attr("data-reactroot");
+						//console.log(dataReactid.length);
+						//console.log(dataReactid);
+						//console.log("tag : ", this);
+						//console.log(dataReactid.indexOf("commnet"));
+						//TODO: need check why indexOf not work
+						return dataReactid !== undefined;
 					});
 					//console.log('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
 					sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
-						var dataReactid = $(this).attr( "data-reactid" );
-						return dataReactid.length >= 20;
+						var dataReactid = $(this).attr( "data-testid" );
+						return dataReactid.length >= 0;
 					});
 					//console.log('Like all comment : '+sad_posts.length);
 					break;
 				case 'both':
-					sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
+					sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']");
 					//console.log('Facebook all post and comment : '+sad_posts.length);
 					break;
 				default:
@@ -89,7 +93,6 @@
 		//var sad_all=sad_posts.concat(sad_comments);
 		var happy = [];
 
-		//console.log("Number of comments: "+ sad_comments.length);
 		//console.log("Number of posts and comments : "+ sad_posts.length);
 		// Select only the Like buttons.
 		// Convert the sad NodeList to a happy Array.
@@ -109,7 +112,8 @@
 			if (happy.length <= 0) {
 				return;
 			}
-		   happy[0].click();
+			// console.log("happy : ", happy[0]);
+		    happy[0].click();
 			if(happy.length > 0){
 				//console.log('Send request : '+ (happy.length - 1));
 				chrome.runtime.sendMessage({count: (happy.length - 1)}, function(response) {
