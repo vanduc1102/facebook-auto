@@ -1,12 +1,8 @@
-var DEBUG = false;
-if(DEBUG){
-	console.log('Content script running........... : '+window.location.origin);
-}
-function LOGGER(p){
-	if(DEBUG){
-		console.log(p);
-	}
-}
+var DEBUG = true;
+
+var urlOrigin=window.location.origin;
+LOGGER('Content script running........... : '+urlOrigin);
+
 (function(){
 	chrome.storage.sync.get({
 		"google": "post",
@@ -20,18 +16,49 @@ function LOGGER(p){
 		if(cfgData['numberOfScroll'] > 1){
 			autoScrollToBottom(cfgData)
 		}else{
-			executeLike(cfgData);
-		}		
+			if(isFacebook() && cfgData['facebook'] == 'both'){
+				loadAllComment(cfgData);
+			}else{
+				executeLike(cfgData);
+			}	
+		}
 		
 	});
+	function loadAllComment(cfgData){		
+		if(isFacebook() && cfgData['facebook'] == 'both'){
+			var moreComments = $("a[role='button'][class='UFIPagerLink']");
+			function loadMoreComment(comments, intervalTime) {
+				if (comments.length <= 0) {
+					LOGGER("Finished load more comments");
+					window.setTimeout(function(){
+						LOGGER("executeLike after waiting 2 seconds");
+						executeLike(cfgData);
+					},2000);
+					return;
+				}
+				comments[0].click();
+				
+				window.setTimeout(function() {					
+					loadMoreComment(comments.splice(1), intervalTime);
+				}, intervalTime);
+			}
+			loadMoreComment(moreComments,1000);
+		}		
+
+	}
 	function autoScrollToBottom(cfgData){
 		var i = 0;
 		var scrollInterval = window.setInterval(function(){	
 
 			if(i == cfgData['numberOfScroll']){
 				 clearInterval(scrollInterval);
-				 executeLike(cfgData);
+				 if(isFacebook() && cfgData['facebook'] == 'both'){
+				 	loadAllComment(cfgData);
+				 }else{
+				 	executeLike(cfgData);
+				 }				 
 			}else{
+				LOGGER("Scroll to bottom : "+ i);
 				window.scrollTo(0,document.body.scrollHeight);
 			}
 
@@ -40,85 +67,61 @@ function LOGGER(p){
 		},2000);
 	}
 	function executeLike(cfgData){
-		var urlOrigin=window.location.origin;
 		var time=0;
-		//console.log(urlOrigin);
 		var sad_posts =[];
-		if(urlOrigin.indexOf('plus.google.com') > -1){
+		if(isGooglePlus()){
 			time = parseFloat(cfgData['google_time'])*1000;
 			switch(cfgData['google']){
 				case 'post':
 					sad_posts = $("div[role='button'][aria-pressed='false']");
-					// console.log('Plus all post : '+sad_posts.length);
-					// for(var idx in sad_posts){
-					// 	console.log('tags : ', sad_posts[idx]);
-					// }
 					break;
 				case 'comment':
 					sad_posts = $("button[role='button'][aria-pressed='false'][jscontroller]");
-					//console.log('Plus all comment : '+sad_posts.length);
 					break;
 				case 'both':
 					sad_posts = $("div[id^=po-][aria-pressed='false'],button[role='button'][aria-pressed='false'][jscontroller]");
-					//var google_comment = $("button[role='button'][aria-pressed='false'][jscontroller]");
-					//sad_posts =  $.merge(google_posts, google_comment);
-					//console.log('Plus all post and comment : '+sad_posts.length);
 					break;
 				default:
 					break;
 			};
 		}
 
-		if(urlOrigin.indexOf('facebook') > -1){
-			time = parseFloat(cfgData['facebook_time'])* 1000;
-			// all post and comment
-			// sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
-			// only comment filter : filter("a[data-reactid*='comment']");
-			
+		if(isFacebook()){
+			time = parseFloat(cfgData['facebook_time'])* 1000;		
 			switch(cfgData['facebook']){
 				case 'post':
 					sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
 						var dataReactid = $(this).attr("data-reactroot");
-						//console.log(dataReactid.length);
-						//console.log(dataReactid);
-						//console.log("tag : ", this);
-						//console.log(dataReactid.indexOf("commnet"));
-						//TODO: need check why indexOf not work
 						return dataReactid !== undefined;
 					});
-					//console.log('Like all post : '+sad_posts.length);
+					LOGGER('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
 					sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
 						var dataReactid = $(this).attr( "data-testid" );
 						return dataReactid.length >= 0;
 					});
-					//console.log('Like all comment : '+sad_posts.length);
+					LOGGER('Like all comment : '+sad_posts.length);
 					break;
 				case 'both':
 					sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']");
-					//console.log('Facebook all post and comment : '+sad_posts.length);
+					LOGGER('Facebook all post and comment : '+sad_posts.length);
 					break;
 				default:
 					break;
 			};
 		}
 
-		if(urlOrigin.indexOf('twitter') > -1){
+		if(isTwitter()){
 			time = parseFloat(cfgData['twitter_time'])*1000;
 			sad_posts = $("button[class^='ProfileTweet-actionButton js-actionButton js-actionFavorite']").filter(function( index ) {
 				return $( this ).css("display") == 'inline-block' ;
 			});
-			//console.log("Number of favorite : "+ sad_posts.length);
-			// sad_posts.filter(function(index, element){
-			//     return !element.children("span")[0].hasClass('.is-favorited');
-			// });
 		}
-		//var sad_comments = $('button[title="'+gl_comment+'"]');
-		//var sad_all=sad_posts.concat(sad_comments);
-		var happy = [];
 
-		//console.log("Number of posts and comments : "+ sad_posts.length);
+		var happy = [];
+		
+		LOGGER("Number of posts and comments : "+ sad_posts.length);
 		// Select only the Like buttons.
 		// Convert the sad NodeList to a happy Array.
 		var numberOfLikes=sad_posts.length;
@@ -138,7 +141,9 @@ function LOGGER(p){
 				return;
 			}
 			// console.log("happy : ", happy[0]);
+		    
 		    happy[0].click();
+
 			if(happy.length > 0){
 				//console.log('Send request : '+ (happy.length - 1));
 				chrome.runtime.sendMessage({count: (happy.length - 1)}, function(response) {
@@ -154,3 +159,18 @@ function LOGGER(p){
 		happyFn(happy , time);		
 	};
 })();
+
+function isFacebook(){
+	return urlOrigin.indexOf('facebook') > -1;
+}
+function isGooglePlus(){
+	return urlOrigin.indexOf('plus.google.com') > -1;
+}
+function isTwitter(){
+	return urlOrigin.indexOf('twitter') > -1;
+}
+function LOGGER(p){
+	if(DEBUG){
+		console.log(p);
+	}
+}
