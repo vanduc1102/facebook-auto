@@ -1,4 +1,4 @@
-var DEBUG = true;
+var DEBUG = false;
 
 var urlOrigin=window.location.origin;
 LOGGER('Content script running........... : '+urlOrigin);
