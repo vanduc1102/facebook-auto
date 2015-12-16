@@ -4,7 +4,8 @@
 	<meta charset="utf-8" />
 	<title>Like All Options</title>
 	<link rel="stylesheet" href="options/style.css"></link>
-	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="libs/jquery.js"></script>
+	<script type="text/javascript" src="scripts/logger.js"></script>
 	<script type="text/javascript" src="options/messages.js"></script>
 </head>
 <body>
@@ -70,6 +71,15 @@
 						<input  class="timer" type="number" id="auto-scroll-times" value="0"  min="0" max="1000" step="1"/>
 						<span i18n="msgTime">times</span>
 						
+					</div>
+				</div>
+				<div class="panel panel-primary">
+					<div class="panel-header">
+						<h3 class="panel-title" i18n="msgYoutube">Auto like youtube</h3>
+					</div>
+					<div class="panel-body">
+						<label  for="time" i18n="msgYoutubeAutoLike"> Like youtube :</label>
+						<input  class="timer youtube-like" type="checkbox" id="youtube-like" value="true"/>			
 					</div>
 				</div>
 				<div class="bottom-left">

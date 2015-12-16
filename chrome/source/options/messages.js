@@ -18,7 +18,9 @@ var messages={
 		'msgSavedSuccessfully':'Đã lưu thành công',
 		"msgAutoScrollTitle":"Tự động tải thêm",
 		"msgTime":"lần",
-		"msgAll":"Tất cả"
+		"msgAll":"Tất cả",
+		"msgYoutube":"Youtube",
+		"msgYoutubeAutoLike":"Tự động thích Youtube video"
 	},
 	'en':{
 		'btnSave':'Save',
@@ -39,7 +41,9 @@ var messages={
 		'msgSavedSuccessfully':'Saved successfully',
 		"msgAutoScrollTitle":"Auto scroll page",
 		"msgTime":"times",
-		"msgAll":"All"
+		"msgAll":"All",
+		"msgYoutube":"Youtube",
+		"msgYoutubeAutoLike":"Auto like youtube"
 	},
 	'fr':{
 		'btnSave':'Enregistrer',
@@ -60,7 +64,9 @@ var messages={
 		'msgSavedSuccessfully':'Enregistré avec succès',
 		"msgAutoScrollTitle":"La page de défilement automatique",
 		"msgTime":"fois",
-		"msgAll":"Tous"
+		"msgAll":"Tous",
+		"msgYoutubeAutoLike":"Comme youtube vidéo automatiquement",
+		"msgYoutube":"Youtube"
 	}
 
 };

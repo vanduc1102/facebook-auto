@@ -133,6 +133,9 @@ select.choose-price{
 input[type="image"]{
 	border: none;
 }
+input[type="checkbox"]{
+	height: inherit;
+}
 img.baby{
 	display:block;
 }

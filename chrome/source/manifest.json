@@ -2,17 +2,18 @@
   "name": "Like all, plus all, favorite all",
   "short_name": "FB like all",
   "description": "__MSG_appDesc__",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "background": {
-    "scripts": ["background.js"],
-	"persistent": false
+    "scripts": ["scripts/logger.js","background.js"],
+	  "persistent": false
   },
   "permissions": [
       "storage",
       "tabs", 
       "https://plus.google.com/*",
-	  "https://www.facebook.com/*",
-	  "https://twitter.com/*"
+	    "https://www.facebook.com/*",
+	    "https://twitter.com/*",
+      "https://www.youtube.com/*"
   ],
   "browser_action": {
 		"default_title": "__MSG_appTooltip__",
