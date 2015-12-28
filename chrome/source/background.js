@@ -64,6 +64,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
 	likeYoutubeVideo(tab.url);
 }); 
+chrome.runtime.onInstalled.addListener(function(details){
+	LOGGER("on Installed");
+	chrome.tabs.create({ url: "options.html" });
+});
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		LOGGER( 'receive: '+request.count+ " from tab : "+sender.tab.id +" content script:" + sender.tab.url );
