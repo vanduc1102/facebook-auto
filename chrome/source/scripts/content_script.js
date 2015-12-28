@@ -12,7 +12,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 	  }, function(cfgData) {
 	  	LOGGER(cfgData);
 		if(cfgData['numberOfScroll'] > 1){
-			autoScrollToBottom(cfgData)
+			autoScrollToBottom(cfgData);
 		}else{
 			if(isFacebook() && cfgData['facebook'] == 'both'){
 				loadAllComment(cfgData);
@@ -139,7 +139,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 				return;
 			}
 			// console.log("happy : ", happy[0]);
-		    if(isGooglePlus()){
+		    if(isGooglePlus() && isNewGooglePlus()){
 		    	triggerClickEvent(happy[0]);
 		    }else{
 		    	happy[0].click();
@@ -164,17 +164,20 @@ LOGGER('Content script running........... : '+urlOrigin);
 function isFacebook(){
 	return urlOrigin.indexOf('facebook') > -1;
 }
+
 function isGooglePlus(){
 	return urlOrigin.indexOf('plus.google.com') > -1;
 }
+
 function isTwitter(){
 	return urlOrigin.indexOf('twitter') > -1;
 }
-function LOGGER(p){
-	if(DEBUG){
-		console.log(p);
-	}
+
+function isNewGooglePlus(){
+	var body = $("body.Td");
+	return (body.length == 0);
 }
+
 function triggerClickEvent(node){
 	fireEvent(node,"mousedown");
 	fireEvent(node,"mouseup");
