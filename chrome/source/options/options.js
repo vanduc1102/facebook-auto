@@ -14,7 +14,7 @@ $(function() {
 });
 // Saves options to chrome.storage
 (function(){
-	$("#options" ).submit(function( event ) {
+	$("#options" ).on("input focusout",function( event ) {
 		event.preventDefault();
 		var google = document.getElementById('google').value;
 		var google_time = document.getElementById('google-time').value;
