@@ -222,6 +222,10 @@ td.big-label{
 	color: #ffffff;
 }
 .save-success{
+	position:fixed;
+	top: 50%;
+	left: 50%;
+	z-index:100;
 	display:inline-block;
 	float:left;
 	width:300px;
