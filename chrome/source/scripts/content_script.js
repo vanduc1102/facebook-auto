@@ -24,7 +24,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 	});
 	function loadAllComment(cfgData){		
 		if(isFacebook() && cfgData['facebook'] == 'both'){
-			var moreComments = $("a[role='button'][class='UFIPagerLink']");
+			var moreComments = $("a[role='button'][class='UFILikeLink']");
 			function loadMoreComment(comments, intervalTime) {
 				if (comments.length <= 0) {
 					LOGGER("Finished load more comments");
@@ -40,7 +40,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 					loadMoreComment(comments.splice(1), intervalTime);
 				}, intervalTime);
 			}
-			loadMoreComment(moreComments,1000);
+			loadMoreComment(moreComments,2000);
 		}		
 
 	}
@@ -62,7 +62,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 
 			i++;
 
-		},2000);
+		},4000);
 	}
 	function executeLike(cfgData){
 		var time=0;
@@ -89,8 +89,8 @@ LOGGER('Content script running........... : '+urlOrigin);
 			switch(cfgData['facebook']){
 				case 'post':
 					sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
-						var dataReactid = $(this).attr("data-reactroot");
-						return dataReactid !== undefined;
+						var title = $(this).attr("title");
+						return title == undefined;
 					});
 					LOGGER('Like all post : '+sad_posts.length);
 					break;
@@ -138,7 +138,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 			if (happy.length <= 0) {
 				return;
 			}
-			// console.log("happy : ", happy[0]);
+			
 		    if(isGooglePlus() && isNewGooglePlus()){
 		    	triggerClickEvent(happy[0]);
 		    }else{
