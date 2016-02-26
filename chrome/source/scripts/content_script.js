@@ -88,10 +88,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 			time = parseFloat(cfgData['facebook_time'])* 1000;		
 			switch(cfgData['facebook']){
 				case 'post':
-					sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
-						var title = $(this).attr("title");
-						return title == undefined;
-					});
+					sad_posts = $("a[role='button'][aria-pressed='false']");
 					LOGGER('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
