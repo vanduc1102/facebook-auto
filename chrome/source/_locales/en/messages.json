@@ -18,5 +18,9 @@
 	"iconTileTw":{
 		"message":"Favorite all",
 		"description":"Like all opend posts and comments of Twitter"
+	},
+	"iconTileLike":{
+		"message":"Like",
+		"description":"Like all"
 	}
 }

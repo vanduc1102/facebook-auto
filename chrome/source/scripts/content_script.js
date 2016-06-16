@@ -114,17 +114,22 @@ LOGGER('Content script running........... : '+urlOrigin);
 			});
 		}
 
+		if(isInstagram()){
+			time = parseFloat(cfgData['twitter_time'])*1000;
+			sad_posts = $("a[role='button']").filter(function( index ) {
+				return $( this ).find("span.whiteoutSpriteHeartOpen").length > 0;
+			});
+		}
+
 		var happy = [];
 		
 		LOGGER("Number of posts and comments : "+ sad_posts.length);
 		// Select only the Like buttons.
 		// Convert the sad NodeList to a happy Array.
 		var numberOfLikes=sad_posts.length;
-		if(numberOfLikes > 0){
-			chrome.runtime.sendMessage({count: numberOfLikes}, function(response) {
-				//console.log(response);
-			});  
-		}
+		chrome.runtime.sendMessage({count: numberOfLikes}, function(response) {
+			//console.log(response);
+		});  
 
 
 		for (var i = 0; i < numberOfLikes; i++) {
@@ -168,6 +173,10 @@ function isGooglePlus(){
 
 function isTwitter(){
 	return urlOrigin.indexOf('twitter') > -1;
+}
+
+function isInstagram(){
+	return urlOrigin.indexOf('instagram') > -1;
 }
 
 function isNewGooglePlus(){

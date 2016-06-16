@@ -1,30 +1,26 @@
 //The main function.
 // chrome.browserAction.setBadgeText({text:String(10)});
 LOGGER("Background is running");
-var urls = ['plus.google.com', '.facebook.com', 'twitter.com'];
+var urls = ['plus.google.com', '.facebook.com', 'twitter.com','instagram.com'];
 var youtubeURL = "www.youtube.com/watch";
-var setBadgeNumber = function(tab, count) {
+function setBadgeNumber(tab, count) {
 	if (checkEnable(tab.url)) {
 		if (count > 99) {
-			chrome.browserAction.setBadgeText({
-				text : String('99+'),
-				'tabId' : tab.id
-			});
+			setBadgeText(tab.id, '99+');
 		} else if (count == 0) {
-			//chrome.browserAction.setIcon({path:iconPath, tabId: tab.id});
-			chrome.browserAction.setBadgeText({
-				text : String(''),
-				'tabId' : tab.id
-			});
+			setBadgeText(tab.id, '');
 		} else {
-			chrome.browserAction.setBadgeText({
-				text : String(count),
-				'tabId' : tab.id
-			});
+			setBadgeText(tab.id, String(count));
 		}
 	}
 };
-var checkEnable = function(url) {
+function setBadgeText(tabId, text){
+	chrome.browserAction.setBadgeText({
+		text : text,
+		'tabId' : tabId
+	});
+}
+function checkEnable(url) {
 	for (idx in urls) {
 		if (url.indexOf(urls[idx]) > 0) {
 			return true;
@@ -45,13 +41,14 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		chrome.tabs.executeScript(null, {
 			file : "scripts/content_script.js"
 		});
+		setBadgeText(tab.id,'');
 	} catch(e) {
 		console.log(' Exception on chrome.browserAction.onClicked');
 	}
 });
 
 chrome.tabs.onCreated.addListener(function(tab) {
-	chrome.browserAction.disable(tab.id);
+	chrome.browserAction.disable(tab.id);	
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
@@ -74,8 +71,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 					"title" : chrome.i18n.getMessage("iconTileTw"),
 					"tabId" : tabId
 				});
+			}else{
+				chrome.browserAction.setTitle({
+					"title" : chrome.i18n.getMessage("iconTileLike"),
+					"tabId" : tabId
+				});
 			}
-			//chrome.browserAction.setBadgeText({'text':String('@'),'tabId':tabId});
+			//setBadgeText(tabId, 'Like');
+			//chrome.browserAction.setBadgeText({'text':'Like','tabId':tab.id});
+			//chrome.browserAction.setBadgeText({'text':'Like','tabId':tabId});
 			//chrome.browserAction.setBadgeBackgroundColor({'color':'#000' , 'tabId':tabId});
 		} else {
 			chrome.browserAction.disable(tab.id);
