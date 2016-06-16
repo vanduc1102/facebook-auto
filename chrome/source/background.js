@@ -6,18 +6,18 @@ var youtubeURL = "www.youtube.com/watch";
 function setBadgeNumber(tab, count) {
 	if (checkEnable(tab.url)) {
 		if (count > 99) {
-			setBadgeText(tab.id, '99+');
+			setBadgeText(tab, '99+');
 		} else if (count == 0) {
-			setBadgeText(tab.id, '');
+			setBadgeText(tab, '');
 		} else {
-			setBadgeText(tab.id, String(count));
+			setBadgeText(tab, String(count));
 		}
 	}
 };
-function setBadgeText(tabId, text){
+function setBadgeText(tab, text){
 	chrome.browserAction.setBadgeText({
 		text : text,
-		'tabId' : tabId
+		'tabId' : tab.id
 	});
 }
 function checkEnable(url) {
@@ -77,10 +77,11 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 					"tabId" : tabId
 				});
 			}
-			//setBadgeText(tabId, 'Like');
-			//chrome.browserAction.setBadgeText({'text':'Like','tabId':tab.id});
-			//chrome.browserAction.setBadgeText({'text':'Like','tabId':tabId});
-			//chrome.browserAction.setBadgeBackgroundColor({'color':'#000' , 'tabId':tabId});
+
+			//TODO - ducnguyen - Because facebook reload -- cannot set default text
+			if(isNotFacebook(tab)){
+				setBadgeText(tab, getDefaultText(tab));
+			}			
 		} else {
 			chrome.browserAction.disable(tab.id);
 		}
@@ -116,18 +117,37 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	LOGGER('receive: ' + request.count + " from tab : " + sender.tab.id + " content script:" + sender.tab.url);
 	if (request.count || request.count == 0) {
 		count = request.count;
-		//chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-		//var tab=tabs[0];
 		var tab = sender.tab;
-		setBadgeNumber(tab, request.count);
+		if(count == 0){
+			setBadgeText(tab, getDefaultText(tab));
+		}else{
+			setBadgeNumber(tab, request.count);
+		}		
 		chrome.browserAction.disable(tab.id);
 		if (count == 0) {
 			chrome.browserAction.enable(tab.id);
 		}
-		//});
 	}
 });
+function getDefaultText(tab){
+	var url = tab.url;
+	// Goole plus
+	if(url.indexOf(urls[0]) > -1){
+		return "Plus";
+	}else if(url.indexOf(urls[1]) > -1){
+		return "";
+	}else{
+		return "Like";
+	}
 
+}
+function isNotFacebook(tab){
+	var url = tab.url;
+	if(url.indexOf(urls[1]) > 1){
+		return false;
+	}
+	return true;
+}
 function likeYoutubeVideo(url) {
 	chrome.storage.sync.get({
 		"youtube_like" : "false"
