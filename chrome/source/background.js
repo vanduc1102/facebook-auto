@@ -41,21 +41,22 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		chrome.tabs.executeScript(null, {
 			file : "scripts/content_script.js"
 		});
-		setBadgeText(tab.id,'');
+		setBadgeText(tab,'');
+		disableButton(tab);
 	} catch(e) {
 		console.log(' Exception on chrome.browserAction.onClicked');
 	}
 });
 
 chrome.tabs.onCreated.addListener(function(tab) {
-	chrome.browserAction.disable(tab.id);	
+	disableButton(tab);
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	LOGGER('chrome.tabs.onUpdated.addListener tab.id ' + tab.id + ' ; tab.url ' + tab.url);
 	try {
 		if (checkEnable(tab.url)) {
-			chrome.browserAction.enable(tabId);
+			enableButton(tab);
 			if (tab.url.indexOf(urls[0]) > 0) {
 				chrome.browserAction.setTitle({
 					"title" : chrome.i18n.getMessage("iconTileGp"),
@@ -83,7 +84,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 				setBadgeText(tab, getDefaultText(tab));
 			}			
 		} else {
-			chrome.browserAction.disable(tab.id);
+			disableButton(tab);
 		}
 
 	} catch(e) {
@@ -120,15 +121,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		var tab = sender.tab;
 		if(count == 0){
 			setBadgeText(tab, getDefaultText(tab));
+			enableButton(tab);
 		}else{
 			setBadgeNumber(tab, request.count);
+			disableButton(tab);
 		}		
-		chrome.browserAction.disable(tab.id);
-		if (count == 0) {
-			chrome.browserAction.enable(tab.id);
-		}
 	}
 });
+function enableButton(tab){
+	chrome.browserAction.enable(tab.id);
+}
+function disableButton(tab){
+	chrome.browserAction.disable(tab.id);	
+}
 function getDefaultText(tab){
 	var url = tab.url;
 	// Goole plus
@@ -144,7 +149,7 @@ function getDefaultText(tab){
 function isNotFacebook(tab){
 	var url = tab.url;
 	if(url.indexOf(urls[1]) > 1){
-		return false;
+		return true;
 	}
 	return true;
 }

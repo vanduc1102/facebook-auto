@@ -10,11 +10,7 @@
   "permissions": [
       "storage",
       "tabs", 
-      "https://plus.google.com/*",
-	    "https://www.facebook.com/*",
-	    "https://twitter.com/*",
-      "https://www.youtube.com/*",
-      "https://www.instagram.com/*"
+      "*://*/*"
   ],
   "browser_action": {
 		"default_title": "__MSG_appTooltip__",

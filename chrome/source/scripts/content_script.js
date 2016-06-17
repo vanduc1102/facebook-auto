@@ -1,6 +1,5 @@
 var urlOrigin=window.location.origin;
 LOGGER('Content script running........... : '+urlOrigin);
-
 (function(){
 	chrome.storage.sync.get({
 		"google": "post",
@@ -11,6 +10,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 		"numberOfScroll":0
 	  }, function(cfgData) {
 	  	LOGGER(cfgData);
+
 		if(cfgData['numberOfScroll'] > 1){
 			autoScrollToBottom(cfgData);
 		}else{
@@ -117,7 +117,9 @@ LOGGER('Content script running........... : '+urlOrigin);
 		if(isInstagram()){
 			time = parseFloat(cfgData['twitter_time'])*1000;
 			sad_posts = $("a[role='button']").filter(function( index ) {
-				return $( this ).find("span.whiteoutSpriteHeartOpen").length > 0;
+				var likeElement =  $( this ).find("span");
+				return (likeElement &&(likeElement.hasClass("whiteoutSpriteHeartOpen") 
+					|| likeElement.hasClass("coreSpriteHeartOpen")));
 			});
 		}
 
