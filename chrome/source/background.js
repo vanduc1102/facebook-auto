@@ -49,6 +49,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 });
 
 chrome.tabs.onCreated.addListener(function(tab) {
+	LOGGER('chrome.tabs.onCreated.addListener tab.id ' + tab.id + ' ; tab.url ' + tab.url);
 	disableButton(tab);
 });
 
@@ -56,38 +57,13 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	LOGGER('chrome.tabs.onUpdated.addListener tab.id ' + tab.id + ' ; tab.url ' + tab.url);
 	try {
 		if (checkEnable(tab.url)) {
-			enableButton(tab);
-			if (tab.url.indexOf(urls[0]) > 0) {
-				chrome.browserAction.setTitle({
-					"title" : chrome.i18n.getMessage("iconTileGp"),
-					"tabId" : tabId
-				});
-			} else if (tab.url.indexOf(urls[1]) > 0) {
-				chrome.browserAction.setTitle({
-					"title" : chrome.i18n.getMessage("iconTileFb"),
-					"tabId" : tabId
-				});
-			} else if (tab.url.indexOf(urls[2]) > 0) {
-				chrome.browserAction.setTitle({
-					"title" : chrome.i18n.getMessage("iconTileTw"),
-					"tabId" : tabId
-				});
-			}else{
-				chrome.browserAction.setTitle({
-					"title" : chrome.i18n.getMessage("iconTileLike"),
-					"tabId" : tabId
-				});
-			}
-
-			//TODO - ducnguyen - Because facebook reload -- cannot set default text
-			if(isNotFacebook(tab)){
-				setBadgeText(tab, getDefaultText(tab));
-			}			
+			enableButtonIfNoneText(tab);		
 		} else {
 			disableButton(tab);
 		}
 
 	} catch(e) {
+		console.log(e)
 		LOGGER(' Exception on chrome.tabs.onUpdated');
 	}
 
@@ -128,6 +104,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		}		
 	}
 });
+
+function enableButtonIfNoneText(tab){
+	chrome.browserAction.getBadgeText({"tabId" : tab.id}, function (text){
+		LOGGER("enableButtonIfNoneText : "+text);
+		if(text == ''){
+			enableButton(tab);
+			setBadgeText(tab, getDefaultText(tab));
+		}
+	});
+}
 function enableButton(tab){
 	chrome.browserAction.enable(tab.id);
 }
@@ -140,7 +126,7 @@ function getDefaultText(tab){
 	if(url.indexOf(urls[0]) > -1){
 		return "Plus";
 	}else if(url.indexOf(urls[1]) > -1){
-		return "";
+		return "Like";
 	}else{
 		return "Like";
 	}

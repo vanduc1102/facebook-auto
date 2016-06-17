@@ -4,7 +4,7 @@
 		"description":"The description of the application, displayed in the web store."
 	},
 	"appTooltip":{
-		"message":"Like all, +1 all, favorite all",
+		"message":"Like all, Plus all",
 		"description":" The tile on browserIcon"
 	},
 	"iconTileFb":{
