@@ -123,6 +123,20 @@ LOGGER('Content script running........... : '+urlOrigin);
 			});
 		}
 
+		if(isLinkedin()){
+			time = parseFloat(cfgData['twitter_time'])*1000;
+			if(isLinkedinHome()){
+				sad_posts = $("button.like").filter(function(index){ 
+					var button = $(this);
+					return button.attr('data-type') != 'comment' && button.attr('data-type') != 'reply' && !button.attr('data-liked') 
+				});
+
+			}else if(isLinkedinCompany()){
+				sad_posts = $("a.like");
+			}
+			
+		}
+
 		var happy = [];
 		
 		LOGGER("Number of posts and comments : "+ sad_posts.length);
@@ -179,6 +193,15 @@ function isTwitter(){
 
 function isInstagram(){
 	return urlOrigin.indexOf('instagram') > -1;
+}
+function isLinkedin(){
+	return urlOrigin.indexOf('linkedin') > -1;
+}
+function isLinkedinHome(){
+	return window.location.pathname.indexOf('home') > -1;
+}
+function isLinkedinCompany(){
+	return window.location.pathname.indexOf('company') > -1;
 }
 
 function isNewGooglePlus(){
