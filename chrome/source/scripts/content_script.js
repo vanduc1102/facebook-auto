@@ -125,14 +125,13 @@ LOGGER('Content script running........... : '+urlOrigin);
 
 		if(isLinkedin()){
 			time = parseFloat(cfgData['twitter_time'])*1000;
-			if(isLinkedinHome()){
+			if( isLinkedinCompany() ){
+				sad_posts = $("a.like");
+			}else{
 				sad_posts = $("button.like").filter(function(index){ 
 					var button = $(this);
 					return button.attr('data-type') != 'comment' && button.attr('data-type') != 'reply' && !button.attr('data-liked') 
 				});
-
-			}else if(isLinkedinCompany()){
-				sad_posts = $("a.like");
 			}
 			
 		}
@@ -197,9 +196,7 @@ function isInstagram(){
 function isLinkedin(){
 	return urlOrigin.indexOf('linkedin') > -1;
 }
-function isLinkedinHome(){
-	return window.location.pathname.indexOf('home') > -1;
-}
+
 function isLinkedinCompany(){
 	return window.location.pathname.indexOf('company') > -1;
 }
