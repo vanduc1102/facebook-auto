@@ -1,7 +1,7 @@
 //The main function.
 // chrome.browserAction.setBadgeText({text:String(10)});
 LOGGER("Background is running");
-var urls = ['plus.google.com', '.facebook.com', 'twitter.com','instagram.com','linkedin.com'];
+var urls = ['plus.google.com', '.facebook.com', 'twitter.com','instagram.com','linkedin.com','tumblr.com'];
 var youtubeURL = "www.youtube.com/watch";
 function setBadgeNumber(tab, count) {
 	if (checkEnable(tab.url)) {
@@ -125,8 +125,6 @@ function getDefaultText(tab){
 	// Goole plus
 	if(url.indexOf(urls[0]) > -1){
 		return "Plus";
-	}else if(url.indexOf(urls[1]) > -1){
-		return "Like";
 	}else{
 		return "Like";
 	}

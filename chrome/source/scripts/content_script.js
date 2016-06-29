@@ -133,7 +133,14 @@ LOGGER('Content script running........... : '+urlOrigin);
 					return button.attr('data-type') != 'comment' && button.attr('data-type') != 'reply' && !button.attr('data-liked') 
 				});
 			}
-			
+		}
+
+		if(isTumblr()){
+			time = parseFloat(cfgData['twitter_time'])*1000;
+			sad_posts = $("div.post-control-icon.like").filter(function( index ) {
+				var classAttr =  $( this ).attr('class');
+				return classAttr.indexOf("liked") < 0;
+			});
 		}
 
 		var happy = [];
@@ -199,6 +206,10 @@ function isLinkedin(){
 
 function isLinkedinCompany(){
 	return window.location.pathname.indexOf('company') > -1;
+}
+
+function isTumblr(){
+	return urlOrigin.indexOf('www.tumblr.com') > -1;
 }
 
 function isNewGooglePlus(){
