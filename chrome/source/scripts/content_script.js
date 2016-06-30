@@ -209,7 +209,7 @@ function isLinkedinCompany(){
 }
 
 function isTumblr(){
-	return urlOrigin.indexOf('www.tumblr.com') > -1;
+	return urlOrigin.indexOf('tumblr.com') > -1;
 }
 
 function isNewGooglePlus(){
