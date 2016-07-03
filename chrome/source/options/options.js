@@ -12,6 +12,7 @@ $(function() {
     $(this).html(messages[userLang][$(this).attr("i18n")]);
   });
 });
+
 // Saves options to chrome.storage
 (function(){
 	$("#options" ).on("input focusout",function( event ) {
@@ -98,4 +99,9 @@ $(function() {
 	    var priceChoose= String((val*2) + ' cans');
 	    here.find("#paypal-choose-price").val(priceChoose);
 	});
+
+	var reviewTag = $("a#reviews");
+	var urlReview = reviewTag.attr("href");
+	urlReview +="?hl="+userLang;
+	reviewTag.attr("href",urlReview);
 })();

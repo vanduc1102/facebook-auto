@@ -233,3 +233,13 @@ td.big-label{
 .alert-dismissable{
 	visibility:hidden;
 }
+a.btn-reviews{
+	margin-top: 10px;
+	height: 21px;
+}
+a.btn-reviews span{
+	color : white;
+}
+.paypal-form{
+	display: inline-block !important;
+}
