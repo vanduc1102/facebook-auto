@@ -125,10 +125,11 @@ function getDefaultText(tab){
 	// Goole plus
 	if(url.indexOf(urls[0]) > -1){
 		return "Plus";
+	}else if(url.indexOf("https://www.linkedin.com/people/") > -1){
+		return "Conn";
 	}else{
 		return "Like";
 	}
-
 }
 function isNotFacebook(tab){
 	var url = tab.url;

@@ -1,4 +1,5 @@
 var urlOrigin=window.location.origin;
+var fullUrl = window.location.href;
 LOGGER('Content script running........... : '+urlOrigin);
 (function(){
 	chrome.storage.sync.get({
@@ -149,15 +150,22 @@ LOGGER('Content script running........... : '+urlOrigin);
 		// Select only the Like buttons.
 		// Convert the sad NodeList to a happy Array.
 		var numberOfLikes=sad_posts.length;
-		chrome.runtime.sendMessage({count: numberOfLikes}, function(response) {
-			//console.log(response);
-		});  
+		sendNumberToActionButton(numberOfLikes);
 
 
 		for (var i = 0; i < numberOfLikes; i++) {
 			happy.push(sad_posts[i]);
 		}
 		LOGGER(happy);
+		LOGGER(time);
+		
+		if(isLinkedinPeople()){
+			time = 1000 * 2;
+			makeConnection(time, 0);
+		}else{
+			happyFn(happy , time);	
+		}
+		
 		function happyFn(happy, intervalTime) {
 			if (happy.length <= 0) {
 				return;
@@ -171,19 +179,40 @@ LOGGER('Content script running........... : '+urlOrigin);
 
 			if(happy.length > 0){
 				//console.log('Send request : '+ (happy.length - 1));
-				chrome.runtime.sendMessage({count: (happy.length - 1)}, function(response) {
-					//console.log(response);
-				});  
+				sendNumberToActionButton(happy.length - 1);
 			}
 
 			window.setTimeout(function() {
 				happyFn(happy.splice(1), intervalTime);
 			}, intervalTime);
 		}
-		LOGGER(time);
-		happyFn(happy , time);		
+		
+		// Make connection in LinkedIn
+		function makeConnection(intervalTime, count){
+			count++;
+			
+			var connectionElement = $("ul > li:first-child button.bt-request-buffed");
+			if(connectionElement.length > 0){
+				connectionElement.click();
+				sendNumberToActionButton(count);
+			}else{
+				sendNumberToActionButton(0);
+				return;
+			}
+			
+			window.setTimeout(function() {
+				makeConnection( intervalTime , count);
+			}, intervalTime);
+		}		
+		
 	};
 })();
+
+function sendNumberToActionButton(number){
+	chrome.runtime.sendMessage({count: number}, function(response) {
+		//console.log(response);
+	});  
+}
 
 function isFacebook(){
 	return urlOrigin.indexOf('facebook') > -1;
@@ -202,6 +231,9 @@ function isInstagram(){
 }
 function isLinkedin(){
 	return urlOrigin.indexOf('linkedin') > -1;
+}
+function isLinkedinPeople(){
+	return fullUrl.indexOf('https://www.linkedin.com/people/') > -1;
 }
 
 function isLinkedinCompany(){
