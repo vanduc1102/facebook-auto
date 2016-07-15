@@ -125,8 +125,8 @@ function getDefaultText(tab){
 	// Goole plus
 	if(url.indexOf(urls[0]) > -1){
 		return "Plus";
-	}else if(url.indexOf("https://www.linkedin.com/people/") > -1){
-		return "Conn";
+	}else if(isConnect(url)){
+		return "Con.";
 	}else{
 		return "Like";
 	}
@@ -137,6 +137,11 @@ function isNotFacebook(tab){
 		return true;
 	}
 	return true;
+}
+function isConnect(currentUrl){
+	var urls = ["https://www.linkedin.com/vsearch/","https://www.linkedin.com/people/"];
+	var url = urls.find(link => currentUrl.indexOf(link) > -1);
+	return url != undefined;
 }
 function likeYoutubeVideo(url) {
 	chrome.storage.sync.get({

@@ -12,7 +12,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 	  }, function(cfgData) {
 	  	LOGGER(cfgData);
 
-		if(cfgData['numberOfScroll'] > 1){
+		if(cfgData['numberOfScroll'] > 1 && isScrollable()){
 			autoScrollToBottom(cfgData);
 		}else{
 			if(isFacebook() && cfgData['facebook'] == 'both'){
@@ -47,8 +47,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 	}
 	function autoScrollToBottom(cfgData){
 		var i = 0;
-		var scrollInterval = window.setInterval(function(){	
-
+		var scrollInterval = window.setInterval(function(){
 			if(i == cfgData['numberOfScroll']){
 				 clearInterval(scrollInterval);
 				 if(isFacebook() && cfgData['facebook'] == 'both'){
@@ -60,9 +59,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 				LOGGER("Scroll to bottom : "+ i);
 				window.scrollTo(0,document.body.scrollHeight);
 			}
-
 			i++;
-
 		},4000);
 	}
 	function executeLike(cfgData){
@@ -144,7 +141,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 			});
 		}
 
-		var happy = [];
+		var happy = createHappyButtons(sad_posts);
 		
 		LOGGER("Number of posts and comments : "+ sad_posts.length);
 		// Select only the Like buttons.
@@ -153,19 +150,66 @@ LOGGER('Content script running........... : '+urlOrigin);
 		sendNumberToActionButton(numberOfLikes);
 
 
-		for (var i = 0; i < numberOfLikes; i++) {
-			happy.push(sad_posts[i]);
+		
+
+		function createHappyButtons(sad_posts){
+			var array = []
+			for (var i = 0; i < sad_posts.length; i++) {
+				array.push(sad_posts[i]);
+			}
+			return array;
 		}
 		LOGGER(happy);
 		LOGGER(time);
 		
-		if(isLinkedinPeople()){
+		if(isLinkedInPeopleYouMayKnow()){
 			time = 1000 * 2;
 			makeConnection(time, 0);
 		}else{
 			happyFn(happy , time);	
 		}
+
+		if(isLinkedInSearchPeople()){
+			sendInvite();
+		}
+
+		function sendInvite(){			
+			var happyButtons = getAllInviteButtonOnPage();
+			sendInviteForAllPeopleOnPage(happyButtons,2000,0);
+		}
+
+		function getAllInviteButtonOnPage(){
+			var originButtons =  $('a[href^="/people/invite?"]').filter(function(index){
+				var classAttr =  $( this ).attr('class');
+				return classAttr && classAttr.indexOf("invite-sent") < 0;
+			});
+			return createHappyButtons(originButtons);
+		}
 		
+		function sendInviteForAllPeopleOnPage( happy, intervalTime , number) {
+			if (happy.length <= 0) {
+				loadNextPage();
+				window.setTimeout(function() {
+					var sendAllInviteButtons = getAllInviteButtonOnPage();
+					sendInviteForAllPeopleOnPage(happy.splice(1), intervalTime , number);
+					if(sendAllInviteButtons.length == 0){
+						sendNumberToActionButton(0);
+						return;	
+					}
+				}, 3000);
+			}
+			console.log("sent ddddddddd" + number);
+		    //happy[0].click();
+	
+			if(happy.length > 0){
+				sendNumberToActionButton(number);
+			}
+
+			window.setTimeout(function() {
+				sendInviteForAllPeopleOnPage(happy.splice(1), intervalTime , ++number);
+			}, intervalTime);
+		}
+
 		function happyFn(happy, intervalTime) {
 			if (happy.length <= 0) {
 				return;
@@ -204,7 +248,6 @@ LOGGER('Content script running........... : '+urlOrigin);
 				makeConnection( intervalTime , count);
 			}, intervalTime);
 		}		
-		
 	};
 })();
 
@@ -232,8 +275,17 @@ function isInstagram(){
 function isLinkedin(){
 	return urlOrigin.indexOf('linkedin') > -1;
 }
-function isLinkedinPeople(){
+function isLinkedInPeopleYouMayKnow(){
 	return fullUrl.indexOf('https://www.linkedin.com/people/') > -1;
+}
+function isLinkedInSearchPeople(){
+	return fullUrl.indexOf("https://www.linkedin.com/vsearch/") > -1 ;
+}
+function isScrollable(){
+	return !(fullUrl.indexOf("https://www.linkedin.com/vsearch/") > -1);
+}
+function loadNextPage(){
+	$('a[class^="page-link"][href^="/vsearch"][rel^="next"]').click();
 }
 
 function isLinkedinCompany(){
