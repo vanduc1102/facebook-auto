@@ -86,7 +86,9 @@ LOGGER('Content script running........... : '+urlOrigin);
 			time = parseFloat(cfgData['facebook_time'])* 1000;		
 			switch(cfgData['facebook']){
 				case 'post':
-					sad_posts = $("a[role='button'][aria-pressed='false']");
+					sad_posts = $("a[role='button'][aria-pressed='false']").filter(function(index){
+						return !$(this).hasClass("UFIReactionLink");
+					});
 					LOGGER('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
@@ -188,15 +190,21 @@ LOGGER('Content script running........... : '+urlOrigin);
 		
 		function sendInviteForAllPeopleOnPage( happy, intervalTime , number) {
 			if (happy.length <= 0) {
-				loadNextPage();
-				window.setTimeout(function() {
-					var sendAllInviteButtons = getAllInviteButtonOnPage();
-					sendInviteForAllPeopleOnPage(happy.splice(1), intervalTime , number);
-					if(sendAllInviteButtons.length == 0){
-						sendNumberToActionButton(0);
-						return;	
-					}
-				}, 3000);
+				if(loadNextPage()){
+					var loadMore = window.setTimeout(function() {
+						clearTimeout(loadMore);
+						console.log("load more stop");
+						var sendAllInviteButtons = getAllInviteButtonOnPage();
+						sendInviteForAllPeopleOnPage(happy.splice(1), intervalTime , number);
+						if(sendAllInviteButtons.length == 0){
+							sendNumberToActionButton(0);
+							return;	
+						}
+					}, 5000);
+				}else{
+					sendNumberToActionButton(0);
+					return;	
+				}
 			}
 			console.log("sent ddddddddd" + number);
 		    //happy[0].click();
@@ -285,7 +293,14 @@ function isScrollable(){
 	return !(fullUrl.indexOf("https://www.linkedin.com/vsearch/") > -1);
 }
 function loadNextPage(){
-	$('a[class^="page-link"][href^="/vsearch"][rel^="next"]').click();
+	var nextPageElement = $('a[class^="page-link"][href^="/vsearch"][rel^="next"]').get(0);
+	if(nextPageElement){
+		nextPageElement.click();
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
 function isLinkedinCompany(){
