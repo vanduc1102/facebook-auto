@@ -172,12 +172,37 @@ LOGGER('Content script running........... : '+urlOrigin);
 		}
 
 		if(isLinkedInSearchPeople()){
-			sendInvite();
+			sendAllInvitation(0);
 		}
 
-		function sendInvite(){			
+		function sendAllInvitation (number) {
+			var d = $.Deferred();
+			sendAllInvitationOnPage(number).then(function(currentNumber) {
+			    loadNewPageAndSendInvitation(d,currentNumber);
+			});
+			d.done(function(done) {
+			    sendNumberToActionButton(0);
+			});
+		}
+
+		function loadNewPageAndSendInvitation(defered,number) {
+		  	loadNextPage(number).then(function(resolved) {
+		    sendAllInvitationOnPage(number).then(function(currentNumber) {
+		    	loadNewPageAndSendInvitation(defered,currentNumber);
+		    });
+		  }, function(rejected) {
+		    defered.resolve();
+		  });
+		  return defered.promise();
+		}
+
+		function sendAllInvitationOnPage(number){
+			var defered = $.Deferred();			
 			var happyButtons = getAllInviteButtonOnPage();
-			sendInviteForAllPeopleOnPage(happyButtons,2000,0);
+			clickButtonListOneByOne(happyButtons,2000,number).then(function(number){
+				defered.resolve(number);
+			});
+			return defered.promise();
 		}
 
 		function getAllInviteButtonOnPage(){
@@ -186,36 +211,6 @@ LOGGER('Content script running........... : '+urlOrigin);
 				return classAttr && classAttr.indexOf("invite-sent") < 0;
 			});
 			return createHappyButtons(originButtons);
-		}
-		
-		function sendInviteForAllPeopleOnPage( happy, intervalTime , number) {
-			if (happy.length <= 0) {
-				if(loadNextPage()){
-					var loadMore = window.setTimeout(function() {
-						clearTimeout(loadMore);
-						console.log("load more stop");
-						var sendAllInviteButtons = getAllInviteButtonOnPage();
-						sendInviteForAllPeopleOnPage(happy.splice(1), intervalTime , number);
-						if(sendAllInviteButtons.length == 0){
-							sendNumberToActionButton(0);
-							return;	
-						}
-					}, 5000);
-				}else{
-					sendNumberToActionButton(0);
-					return;	
-				}
-			}
-			console.log("sent ddddddddd" + number);
-		    //happy[0].click();
-	
-			if(happy.length > 0){
-				sendNumberToActionButton(number);
-			}
-
-			window.setTimeout(function() {
-				sendInviteForAllPeopleOnPage(happy.splice(1), intervalTime , ++number);
-			}, intervalTime);
 		}
 
 		function happyFn(happy, intervalTime) {
@@ -292,15 +287,47 @@ function isLinkedInSearchPeople(){
 function isScrollable(){
 	return !(fullUrl.indexOf("https://www.linkedin.com/vsearch/") > -1);
 }
-function loadNextPage(){
+
+function clickButtonListOneByOne(buttons, time, number) {
+  var d = $.Deferred();
+  var promise = d.promise();
+  $.each(buttons, function(index, button) {
+    promise = promise.then(function() {
+    	return clickOnButton(button, time, number++);
+    });
+  });
+  d.resolve();
+  return promise;
+}
+
+function clickOnButton(button, time, number){
+	var d = $.Deferred();
+	setTimeout(function() {
+		number ++;
+		button.click();		
+		sendNumberToActionButton(number);
+	    d.resolve(number);
+	}, time);
+	return d.promise();
+}
+
+function loadNextPage(number){
+	var d = $.Deferred();
 	var nextPageElement = $('a[class^="page-link"][href^="/vsearch"][rel^="next"]').get(0);
 	if(nextPageElement){
-		nextPageElement.click();
-		return true;
+		setTimeout(function() {
+			console.log("load next page ");
+			nextPageElement.click();
+		    d.resolve(true);
+		}, 5000);
 	}
 	else{
-		return false;
+		if(number == 999){
+			alert("Please stop, Grasp all lose all!");
+		}
+		d.reject(true);
 	}
+	return d.promise();
 }
 
 function isLinkedinCompany(){
