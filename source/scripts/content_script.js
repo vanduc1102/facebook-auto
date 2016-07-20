@@ -186,9 +186,9 @@ LOGGER('Content script running........... : '+urlOrigin);
 		}
 
 		function loadNewPageAndSendInvitation(defered,number) {
-		  	loadNextPage(number).then(function(resolved) {
-		    sendAllInvitationOnPage(number).then(function(currentNumber) {
-		    	loadNewPageAndSendInvitation(defered,currentNumber);
+		  	loadNextPage(number).then(function(oldPageNumber) {
+		    sendAllInvitationOnPage(oldPageNumber).then(function(newPageNumber) {
+		    	loadNewPageAndSendInvitation(defered,newPageNumber);
 		    });
 		  }, function(rejected) {
 		    defered.resolve();
@@ -315,10 +315,13 @@ function loadNextPage(number){
 	var d = $.Deferred();
 	var nextPageElement = $('a[class^="page-link"][href^="/vsearch"][rel^="next"]').get(0);
 	if(nextPageElement){
-		nextPageElement.click();
+		setTimeout(function() {
+			nextPageElement.click();
+		}, 1000);
+		
 		setTimeout(function() {
 			console.log("loaded next page ");
-		    d.resolve(true);
+		    d.resolve(number);
 		}, 5000);
 	}
 	else{
