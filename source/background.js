@@ -190,7 +190,6 @@ function getStorageNumber(key,callback){
 	var object = {};
 	object[key] = 0;
 	chrome.storage.sync.get(object, function(item) {
-			debugger;
 			if(callback){
 				callback(item[key]);
 			}else{
