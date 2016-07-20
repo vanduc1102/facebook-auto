@@ -315,9 +315,9 @@ function loadNextPage(number){
 	var d = $.Deferred();
 	var nextPageElement = $('a[class^="page-link"][href^="/vsearch"][rel^="next"]').get(0);
 	if(nextPageElement){
+		nextPageElement.click();
 		setTimeout(function() {
-			console.log("load next page ");
-			nextPageElement.click();
+			console.log("loaded next page ");
 		    d.resolve(true);
 		}, 5000);
 	}
