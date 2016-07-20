@@ -178,18 +178,19 @@ function likeYoutubeVideo(url) {
 }
 
 function setStorageNumber(key,number,callback){
-	chrome.storage.sync.set({
-		key:number
-	}, function() {
+	var object = {};
+	object[key] = number;
+	chrome.storage.sync.set(object, function() {
 		if(callback){
 			callback();
 		}
 	});
 }
 function getStorageNumber(key,callback){
-	chrome.storage.sync.get({
-			key:1
-		}, function(item) {
+	var object = {};
+	object[key] = 0;
+	chrome.storage.sync.get(object, function(item) {
+			debugger;
 			if(callback){
 				callback(item[key]);
 			}else{
