@@ -19,6 +19,12 @@ function updateNumber(number){
 	$("[i18n='msgCountNumber']").html(strCount);
 }
 
+function updateLinkAnchorTag(anchorSelector){
+	var anchor = $(anchorSelector);
+	var urlReview = anchor.attr("href");
+	urlReview +="?hl="+userLang;
+	anchor.attr("href",urlReview);
+}
 
 
 // Saves options to chrome.storage
@@ -110,8 +116,7 @@ function updateNumber(number){
 	    here.find("#paypal-choose-price").val(priceChoose);
 	});
 
-	var reviewTag = $("a#reviews");
-	var urlReview = reviewTag.attr("href");
-	urlReview +="?hl="+userLang;
-	reviewTag.attr("href",urlReview);
+	
+	updateLinkAnchorTag("a#reviews");
+	updateLinkAnchorTag("a#please-review");
 })();
