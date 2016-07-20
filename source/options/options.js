@@ -1,5 +1,6 @@
 var userLang = navigator.language || navigator.userLanguage;
 userLang = userLang.substring(0,2);
+//userLang = "vi";
 if(!messages[userLang]){
 	userLang = 'en';
 }
@@ -11,7 +12,14 @@ $(function() {
   $("[i18n]").each(function() {
     $(this).html(messages[userLang][$(this).attr("i18n")]);
   });
+  
 });
+function updateNumber(number){
+	var strCount = messages[userLang]['msgCountNumber'].replace("{0}",number);
+	$("[i18n='msgCountNumber']").html(strCount);
+}
+
+
 
 // Saves options to chrome.storage
 (function(){
@@ -56,7 +64,8 @@ $(function() {
 			"facebook_time": 1,
 			"twitter_time":0.8,
 			"numberOfScroll":0,
-			"youtube_like":false
+			"youtube_like":false,
+			"count_number":1
 		}, function(item) {
 			document.getElementById('google').value =item['google'];
 			document.getElementById('google-time').value =item['google_time'];
@@ -69,6 +78,7 @@ $(function() {
 			}else{
 				document.getElementById('youtube-like').checked = false;
 			}
+			updateNumber(item["count_number"]);
 			// console.log(item);
 		});
 	});

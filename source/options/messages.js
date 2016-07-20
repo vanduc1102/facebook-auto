@@ -20,7 +20,10 @@ var messages={
 		"msgTime":"lần",
 		"msgAll":"Tất cả",
 		"msgYoutube":"Youtube",
-		"msgYoutubeAutoLike":"Tự động thích Youtube video"
+		"msgYoutubeAutoLike":"Tự động thích Youtube video",
+		"msgOrSendMe":"Cho 5 sao",
+		"msgCountNumber":"Bạn đã sử dụng nút Like-all {0} lần.",
+		"msgPleaseReview":"Hãy đánh giá giúp tôi."
 	},
 	'en':{
 		'btnSave':'Save',
@@ -43,7 +46,10 @@ var messages={
 		"msgTime":"times",
 		"msgAll":"All",
 		"msgYoutube":"Youtube",
-		"msgYoutubeAutoLike":"Auto like youtube"
+		"msgYoutubeAutoLike":"Auto like youtube",
+		"msgOrSendMe":"Or give me",
+		"msgCountNumber":"You have clicked on Like-all button {0} times.",
+		"msgPleaseReview":"Please give me a review"
 	},
 	'fr':{
 		'btnSave':'Enregistrer',

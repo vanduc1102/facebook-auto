@@ -233,12 +233,19 @@ td.big-label{
 .alert-dismissable{
 	visibility:hidden;
 }
+span.count-number{
+	padding-left:0;
+}
 a.btn-reviews{
 	margin-top: 10px;
 	height: 21px;
+	text-decoration: none;
 }
 a.btn-reviews span{
 	color : white;
+}
+a.btn-reviews:hover{
+    text-decoration: none;
 }
 .paypal-form{
 	display: inline-block !important;
