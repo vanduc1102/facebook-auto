@@ -302,12 +302,13 @@ function clickButtonListOneByOne(buttons, time, number) {
 
 function clickOnButton(button, time, number){
 	var d = $.Deferred();
+	var rand = Math.floor(Math.random() * 1000) + 1 ;
 	setTimeout(function() {
 		number ++;
 		button.click();		
 		sendNumberToActionButton(number);
 	    d.resolve(number);
-	}, time);
+	}, time + rand);
 	return d.promise();
 }
 

@@ -43,6 +43,12 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		});
 		setBadgeText(tab,'');
 		disableButton(tab);
+		var countNumberFieldName = "count_number";
+		getStorageNumber(countNumberFieldName,function(numberOfUsed){
+			var times = Number(numberOfUsed);
+			times++;
+			setStorageNumber(countNumberFieldName,times);
+		});
 	} catch(e) {
 		console.log(' Exception on chrome.browserAction.onClicked');
 	}
@@ -169,5 +175,25 @@ function likeYoutubeVideo(url) {
 			}
 		}
 	});
+}
 
+function setStorageNumber(key,number,callback){
+	chrome.storage.sync.set({
+		key:number
+	}, function() {
+		if(callback){
+			callback();
+		}
+	});
+}
+function getStorageNumber(key,callback){
+	chrome.storage.sync.get({
+			key:1
+		}, function(item) {
+			if(callback){
+				callback(item[key]);
+			}else{
+				console.log("You can't get value without callback.")
+			}
+		});
 }
