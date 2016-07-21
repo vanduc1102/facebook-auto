@@ -236,16 +236,9 @@ td.big-label{
 span.count-number{
 	padding-left:0;
 }
-a.btn-reviews{
-	margin-top: 10px;
-	height: 21px;
-	text-decoration: none;
-}
-a.btn-reviews span{
-	color : white;
-}
-a.btn-reviews:hover{
-    text-decoration: none;
+.row{
+	display: block;
+	width: 100%;
 }
 .paypal-form{
 	display: inline-block !important;

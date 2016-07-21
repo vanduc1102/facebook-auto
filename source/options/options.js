@@ -116,7 +116,5 @@ function updateLinkAnchorTag(anchorSelector){
 	    here.find("#paypal-choose-price").val(priceChoose);
 	});
 
-	
-	updateLinkAnchorTag("a#reviews");
 	updateLinkAnchorTag("a#please-review");
 })();

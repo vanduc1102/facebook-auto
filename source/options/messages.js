@@ -21,7 +21,6 @@ var messages={
 		"msgAll":"Tất cả",
 		"msgYoutube":"Youtube",
 		"msgYoutubeAutoLike":"Tự động thích Youtube video",
-		"msgOrSendMe":"Cho 5 sao",
 		"msgCountNumber":"Bạn đã sử dụng nút Like-all {0} lần.",
 		"msgPleaseReview":"Hãy đánh giá giúp tôi."
 	},
@@ -47,7 +46,6 @@ var messages={
 		"msgAll":"All",
 		"msgYoutube":"Youtube",
 		"msgYoutubeAutoLike":"Auto like youtube",
-		"msgOrSendMe":"Or give me",
 		"msgCountNumber":"You have clicked on Like-all button {0} times.",
 		"msgPleaseReview":"Please give me a review"
 	},
