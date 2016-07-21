@@ -15,7 +15,7 @@ $(function() {
   
 });
 function updateNumber(number){
-	var strCount = messages[userLang]['msgCountNumber'].replace("{0}",number);
+	var strCount = messages[userLang]['msgCountNumber'].replace("{0}","<b style='color:red'>"+number+"</b>");
 	$("[i18n='msgCountNumber']").html(strCount);
 }
 
