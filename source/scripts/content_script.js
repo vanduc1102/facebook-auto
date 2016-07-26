@@ -25,7 +25,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 	});
 	function loadAllComment(cfgData){		
 		if(isFacebook() && cfgData['facebook'] == 'both'){
-			var moreComments = $("a[role='button'][class='UFILikeLink']");
+			var moreComments = $("a[role='button'][class='UFIPagerLink']");
 			function loadMoreComment(comments, intervalTime) {
 				if (comments.length <= 0) {
 					LOGGER("Finished load more comments");
@@ -92,14 +92,11 @@ LOGGER('Content script running........... : '+urlOrigin);
 					LOGGER('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
-					sad_posts = $("a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']").filter(function( index ) {
-						var dataReactid = $(this).attr( "data-testid" );
-						return dataReactid.length >= 0;
-					});
+					sad_posts = $("a[class='UFILikeLink UFIReactionLink'][aria-pressed='false']");
 					LOGGER('Like all comment : '+sad_posts.length);
 					break;
 				case 'both':
-					sad_posts = $("a[role='button'][data-ft='{\"tn\":\">\"}']");
+					sad_posts = $("a[role='button'][aria-pressed='false']");
 					LOGGER('Facebook all post and comment : '+sad_posts.length);
 					break;
 				default:
