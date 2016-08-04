@@ -39,7 +39,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 				
 				window.setTimeout(function() {					
 					loadMoreComment(comments.splice(1), intervalTime);
-				}, intervalTime);
+				}, intervalTime + getRandom(1,1000));
 			}
 			loadMoreComment(moreComments,2000);
 		}		
@@ -60,7 +60,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 				window.scrollTo(0,document.body.scrollHeight);
 			}
 			i++;
-		},4000);
+		}, 4000 +  getRandom(1,1000));
 	}
 	function executeLike(cfgData){
 		var time=0;
@@ -92,7 +92,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 					LOGGER('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
-					sad_posts = $("a[class='UFILikeLink UFIReactionLink'][aria-pressed='false']");
+					sad_posts = $("a[data-testid='fb-ufi-unlikelink'][aria-pressed='false']");
 					LOGGER('Like all comment : '+sad_posts.length);
 					break;
 				case 'both':
@@ -228,7 +228,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 
 			window.setTimeout(function() {
 				happyFn(happy.splice(1), intervalTime);
-			}, intervalTime);
+			}, intervalTime + getRandom(1,1000));
 		}
 		
 		// Make connection in LinkedIn
@@ -246,7 +246,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 			
 			window.setTimeout(function() {
 				makeConnection( intervalTime , count);
-			}, intervalTime);
+			}, intervalTime +  getRandom(1,1000));
 		}		
 	};
 })();
@@ -299,7 +299,7 @@ function clickButtonListOneByOne(buttons, time, number) {
 
 function clickOnButton(button, time, number){
 	var d = $.Deferred();
-	var rand = Math.floor(Math.random() * 1000) + 1 ;
+	var rand = getRandom(1,1000) ;
 	setTimeout(function() {
 		number ++;
 		button.click();		
@@ -307,6 +307,10 @@ function clickOnButton(button, time, number){
 	    d.resolve(number);
 	}, time + rand);
 	return d.promise();
+}
+
+function getRandom(min,max){
+	return Math.floor(Math.random() * max) + min ;
 }
 
 function loadNextPage(number){
