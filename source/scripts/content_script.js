@@ -92,11 +92,11 @@ LOGGER('Content script running........... : '+urlOrigin);
 					LOGGER('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
-					sad_posts = $("a[data-testid='fb-ufi-unlikelink'][aria-pressed='false']");
+					sad_posts = $("a[data-testid='fb-ufi-unlikelink'][aria-pressed='false'],a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
 					LOGGER('Like all comment : '+sad_posts.length);
 					break;
 				case 'both':
-					sad_posts = $("a[role='button'][aria-pressed='false']");
+					sad_posts = $("a[role='button'][aria-pressed='false'],a[role='button'][data-ft='{\"tn\":\">\"}']");
 					LOGGER('Facebook all post and comment : '+sad_posts.length);
 					break;
 				default:
@@ -218,6 +218,8 @@ LOGGER('Content script running........... : '+urlOrigin);
 		    if(isGooglePlus() && isNewGooglePlus()){
 		    	triggerClickEvent(happy[0]);
 		    }else{
+		    	// The root of everything.
+		    	LOGGER("sent a like");
 		    	happy[0].click();
 		    }
 
