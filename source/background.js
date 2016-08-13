@@ -1,54 +1,19 @@
 //The main function.
-// chrome.browserAction.setBadgeText({text:String(10)});
 LOGGER("Background is running");
 var urls = ['plus.google.com', '.facebook.com', 'twitter.com','instagram.com','linkedin.com','tumblr.com'];
 var youtubeURL = "www.youtube.com/watch";
-function setBadgeNumber(tab, count) {
-	if (checkEnable(tab.url)) {
-		if (count > 99) {
-			setBadgeText(tab, '99+');
-		} else if (count == 0) {
-			setBadgeText(tab, '');
-		} else {
-			setBadgeText(tab, String(count));
-		}
-	}
-};
-function setBadgeText(tab, text){
-	chrome.browserAction.setBadgeText({
-		text : text,
-		'tabId' : tab.id
-	});
-}
-function checkEnable(url) {
-	for (idx in urls) {
-		if (url.indexOf(urls[idx]) > 0) {
-			return true;
-		}
-	}
-	return false;
-};
-
 var count = 0;
+
 chrome.browserAction.onClicked.addListener(function(tab) {
 	try {
-		chrome.tabs.executeScript(null, {
-			file : "libs/jquery.js"
-		});
-		chrome.tabs.executeScript(null, {
-			file : "scripts/logger.js"
-		});
-		chrome.tabs.executeScript(null, {
-			file : "scripts/content_script.js"
-		});
+		executeScripts(null, [ 
+	        { file : "libs/jquery.js" }, 
+	        { file : "scripts/logger.js" },
+	        { file : "scripts/content_script.js" }
+	    ]);
 		setBadgeText(tab,'');
 		disableButton(tab);
-		var countNumberFieldName = "count_number";
-		getStorageNumber(countNumberFieldName,function(numberOfUsed){
-			var times = Number(numberOfUsed);
-			times++;
-			setStorageNumber(countNumberFieldName,times);
-		});
+		updateNumberOfUsed();
 	} catch(e) {
 		console.log(' Exception on chrome.browserAction.onClicked');
 	}
@@ -110,6 +75,73 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		}		
 	}
 });
+var CONSTANT = {
+	"FACEBOOK":{
+		"MENUS":{
+			"CONFIRM-FRIEND":"confirm-friend-request",
+			"REQUEST-FRIEND":"send-friend-request",
+			"LIKE-ALL":"like-all"
+		}
+	}
+}
+
+function genericOnClick(info, tab) {
+  console.log("Cliked : "+ info.menuItemId);
+  switch(info.menuItemId){
+  	case CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"]:
+  		break;
+  	case CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"]:
+  		break;
+  	default:
+  	break;
+  }
+  executeScripts(null, [ 
+	    { file : "libs/jquery.js" }, 
+	    { file : "scripts/logger.js" },
+	    { file : "scripts/content_script.js" }
+	]);
+}
+
+function createContextMenus(){
+	var rootFbMenu = chrome.contextMenus.create({id:"facebook-auto","title": "Facebook Auto", "contexts":["all"]});
+	chrome.contextMenus.onClicked.addListener(genericOnClick);
+
+	// Create a parent item and two children.
+	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"],"title": "Confirm friend request","parentId": rootFbMenu});
+	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"],"title": "Send friend request","parentId": rootFbMenu});
+	chrome.contextMenus.create({"id":"separator1",type:'separator',"parentId": rootFbMenu});
+	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"],"title": "Like all","parentId": rootFbMenu});
+}
+
+createContextMenus();
+
+function setBadgeNumber(tab, count) {
+	if (checkEnable(tab.url)) {
+		if (count > 99) {
+			setBadgeText(tab, '99+');
+		} else if (count == 0) {
+			setBadgeText(tab, '');
+		} else {
+			setBadgeText(tab, String(count));
+		}
+	}
+}
+
+function setBadgeText(tab, text){
+	chrome.browserAction.setBadgeText({
+		text : text,
+		'tabId' : tab.id
+	});
+}
+
+function checkEnable(url) {
+	for (idx in urls) {
+		if (url.indexOf(urls[idx]) > 0) {
+			return true;
+		}
+	}
+	return false;
+}
 
 function enableButtonIfNoneText(tab){
 	chrome.browserAction.getBadgeText({"tabId" : tab.id}, function (text){
@@ -196,4 +228,29 @@ function getStorageNumber(key,callback){
 				console.log("You can't get value without callback.")
 			}
 		});
+}
+
+function executeScripts(tabId, injectDetailsArray)
+{
+    function createCallback(tabId, injectDetails, innerCallback) {
+        return function () {
+            chrome.tabs.executeScript(tabId, injectDetails, innerCallback);
+        };
+    }
+
+    var callback = null;
+
+    for (var i = injectDetailsArray.length - 1; i >= 0; --i)
+        callback = createCallback(tabId, injectDetailsArray[i], callback);
+
+    if (callback !== null)
+        callback();   // execute outermost function
+}
+function updateNumberOfUsed(){
+	var countNumberFieldName = "count_number";
+	getStorageNumber(countNumberFieldName,function(numberOfUsed){
+		var times = Number(numberOfUsed);
+		times++;
+		setStorageNumber(countNumberFieldName,times);
+	});
 }

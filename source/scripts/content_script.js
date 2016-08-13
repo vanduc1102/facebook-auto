@@ -187,12 +187,12 @@ LOGGER('Content script running........... : '+urlOrigin);
 
 		function loadNewPageAndSendInvitation(defered,number) {
 		  	loadNextPage(number).then(function(oldPageNumber) {
-		    sendAllInvitationOnPage(oldPageNumber).then(function(newPageNumber) {
-		    	loadNewPageAndSendInvitation(defered,newPageNumber);
-		    });
-		  }, function(rejected) {
-		    defered.resolve();
-		  });
+			    sendAllInvitationOnPage(oldPageNumber).then(function(newPageNumber) {
+			    	loadNewPageAndSendInvitation(defered,newPageNumber);
+			    });
+			}, function(rejected) {
+				defered.resolve();
+			});
 		  return defered.promise();
 		}
 
@@ -221,7 +221,8 @@ LOGGER('Content script running........... : '+urlOrigin);
 		    if(isGooglePlus() && isNewGooglePlus()){
 		    	triggerClickEvent(happy[0]);
 		    }else{
-		    	happy[0].click();
+		    	console.log("Button clicked");
+		    	// happy[0].click();
 		    }
 
 			if(happy.length > 0){

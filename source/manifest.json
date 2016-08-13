@@ -8,6 +8,7 @@
 	  "persistent": false
   },
   "permissions": [
+      "contextMenus",
       "storage",
       "tabs", 
       "*://*/*"
