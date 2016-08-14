@@ -8,7 +8,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 	try {
 		executeScripts(null, [ 
 	        { file : "libs/jquery.js" }, 
-	        { file : "scripts/logger.js" },
+	        { file : "scripts/utils.js" },
 	        { file : "scripts/content_script.js" }
 	    ]);
 		setBadgeText(tab,'');
@@ -89,17 +89,23 @@ function genericOnClick(info, tab) {
   console.log("Cliked : "+ info.menuItemId);
   switch(info.menuItemId){
   	case CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"]:
+  		executeScripts(null, [ 
+		    { file : "libs/jquery.js" }, 
+		    { file : "scripts/utils.js" },
+		    { file : "scripts/confirm-friend.js" }
+		]);
   		break;
   	case CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"]:
+  		executeScripts(null, [ 
+		    { file : "libs/jquery.js" }, 
+		    { file : "scripts/utils.js" },
+		    { file : "scripts/request-friend.js" }
+		]);
   		break;
   	default:
   	break;
   }
-  executeScripts(null, [ 
-	    { file : "libs/jquery.js" }, 
-	    { file : "scripts/logger.js" },
-	    { file : "scripts/content_script.js" }
-	]);
+
 }
 
 function createContextMenus(){
@@ -110,7 +116,7 @@ function createContextMenus(){
 	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"],"title": "Confirm friend request","parentId": rootFbMenu});
 	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"],"title": "Send friend request","parentId": rootFbMenu});
 	chrome.contextMenus.create({"id":"separator1",type:'separator',"parentId": rootFbMenu});
-	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"],"title": "Like all","parentId": rootFbMenu});
+	// chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"],"title": "Like all","parentId": rootFbMenu});
 }
 
 createContextMenus();
@@ -190,15 +196,11 @@ function likeYoutubeVideo(url) {
 			if (url.indexOf(youtubeURL) > -1) {
 				LOGGER("You are in youtube watch page");
 				try {
-					chrome.tabs.executeScript(null, {
-						file : "libs/jquery.js"
-					});
-					chrome.tabs.executeScript(null, {
-						file : "scripts/logger.js"
-					});
-					chrome.tabs.executeScript(null, {
-						file : "scripts/youtube.js"
-					});
+					executeScripts(null, [ 
+				        { file : "libs/jquery.js" }, 
+				        { file : "scripts/utils.js" },
+				        { file : "scripts/youtube.js" }
+				    ]);
 				} catch(e) {
 					console.log(' Exception on chrome.browserAction.onClicked');
 				}
