@@ -37,7 +37,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 		console.log(e)
 		LOGGER(' Exception on chrome.tabs.onUpdated');
 	}
-
+	createContextMenus(tab);
 	likeYoutubeVideo(tab.url);
 });
 chrome.runtime.onInstalled.addListener(function(details) {
@@ -108,7 +108,7 @@ function genericOnClick(info, tab) {
 
 }
 
-function createContextMenus(){
+function createFBContextMenus(){
 	var rootFbMenu = chrome.contextMenus.create({id:"facebook-auto","title": "Facebook Auto", "contexts":["all"]});
 	chrome.contextMenus.onClicked.addListener(genericOnClick);
 
@@ -116,10 +116,15 @@ function createContextMenus(){
 	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"],"title": "Confirm friend request","parentId": rootFbMenu});
 	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"],"title": "Send friend request","parentId": rootFbMenu});
 	chrome.contextMenus.create({"id":"separator1",type:'separator',"parentId": rootFbMenu});
-	// chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"],"title": "Like all","parentId": rootFbMenu});
+	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"],"title": "Comming soon","parentId": rootFbMenu});
 }
 
-createContextMenus();
+function createContextMenus(tab){
+	if(!isNotFacebook(tab)){
+		createFBContextMenus();
+	}
+}
+
 
 function setBadgeNumber(tab, count) {
 	if (checkEnable(tab.url)) {

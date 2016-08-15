@@ -8,13 +8,12 @@ function clickOnButton(button, time, number){
 	var d = $.Deferred();
 	var rand = getRandom(1,1000) ;
 	setTimeout(function() {
-		number ++;
 		// The root of everything
-		
+		number ++;
 		LOGGER("button clicked");
 		
 		button.click();		
-		//sendNumberToActionButton(number);
+		sendNumberToActionButton(number);
 	    d.resolve(number);
 	}, time + rand);
 	return d.promise();
@@ -24,8 +23,9 @@ function clickButtonListOneByOne(buttons, time, number) {
   var d = $.Deferred();
   var promise = d.promise();
   $.each(buttons, function(index, button) {
-    promise = promise.then(function() {
-    	return clickOnButton(button, time, number++);
+    promise = promise.then(function(response) {
+    	number ++;
+    	return clickOnButton(button, time, number);
     });
   });
   d.resolve();
@@ -40,6 +40,11 @@ function loadMoreByElement(cssSelector, expected){
 function loadMoreByScroll(expected){
 	var d = $.Deferred();
 	return scrollWrapper(d,1,expected);
+}
+
+function clickOnXpathButtonTill(buttonXpath,time,expected){
+	var d = $.Deferred();
+	return clickOnXpathButtonRecursive(buttonXpath,d,time, 0,expected);
 }
 
 function clickOnElementTill(cssSelector,d, times, expected){
@@ -93,6 +98,21 @@ function scrollWrapper(d,times,expected){
 	});
 	return d.promise();
 }
+function clickOnXpathButtonRecursive(buttonXpath, d, time, counter, expected){	
+	if(counter == expected){
+		d.resolve();
+		return d.promise();
+	}
+	var button = xPath(buttonXpath)[0];
+	if(button){
+		clickOnButton(button, time, counter).then(function(counter){
+			clickOnXpathButtonRecursive(buttonXpath, d, time, counter, expected);
+		});
+	}else{
+		d.resolve();
+	}
+	return d.promise();
+}
 function scrollToBottom(){
 	var d = $.Deferred();
 	window.scrollTo(0,document.body.scrollHeight);
@@ -116,4 +136,37 @@ function openPage(url){
 }
 function getFullUrl(){
 	return window.location.href;
+}
+
+function sendNumberToActionButton(number){
+	chrome.runtime.sendMessage({count: number}, function(response) {
+		//console.log(response);
+	});  
+}
+
+function checkLinkInLinks(link, links) {
+    var len = links.length;
+    for(var i = 0 ; i < len;i++)
+    {
+        if(link.indexOf(links[i]) > -1){
+        	return true;
+        }
+    }
+    return false;
+}
+function xPath(xpth){
+	var jpgLinks    = document.evaluate (
+	    xpth,
+	    document,
+	    null,
+	    XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+	    null
+	);
+	var numLinks    = jpgLinks.snapshotLength;
+	var result = [];
+	for (var J = 0;  J < numLinks;  ++J) {
+	    var thisLink = jpgLinks.snapshotItem (J);
+	    result.push(thisLink);
+	}
+	return result;
 }
