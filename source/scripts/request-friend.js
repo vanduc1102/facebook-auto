@@ -10,16 +10,17 @@ $(function(){
 			});	
 		});
 	}else{
-		var dialogBox = xPath('//*[@id="facebook"]/body/div[19]/div[2]');
-		if(dialogBox.length > 0){
-			var buttons = $(".FriendButton > button.FriendRequestAdd");
+		var dialogBox = $("div[role='dialog'] ul[id*='reaction_profile_browser'");
+		if(dialogBox.length > 0 ){
+			var buttons = dialogBox.find(".FriendButton > button.FriendRequestAdd");
+			LOGGER('Number of buttons '+ buttons.length);
 			clickButtonListOneByOne(buttons,2000,0).then(function(response){
 				sendNumberToActionButton(0);
 				LOGGER("Finished find friend on Post");
 			});	
 		}else{
-			var firstButtonXpath = '//*[@id="pagelet_ego_pane"]/div/div/div[2]/div[1]/div/div/div[3]/a/button';
-			clickOnXpathButtonTill(firstButtonXpath,2000,100).then(function(response){
+			var firstButtonXpath = 'div#rightCol div.clearfix.ego_unit button';
+			clickOnXpathButtonTill(firstButtonXpath,3000,100).then(function(response){
 				sendNumberToActionButton(0);
 				LOGGER("Finished find of left panel");
 			});

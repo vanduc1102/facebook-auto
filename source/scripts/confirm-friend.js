@@ -5,10 +5,18 @@ $(function() {
 	        LOGGER('Done load more page');
 	        var buttons = $(".ruResponseButtons > button");
 	        LOGGER('Number of buttons ' + buttons.length);
-	        clickButtonListOneByOne(buttons, 2000, 0);
+	        clickButtonListOneByOne(buttons, 2000, 0).then(function(response){
+				sendNumberToActionButton(0);
+				LOGGER("Finished find of left panel");
+			});
 	    });
 	}else{
-		
+		var buttons = $("div#fbRequestsList_wrapper button[name=\"actions[accept]\"]");
+	    LOGGER('Number of buttons ' + buttons.length);
+	    clickButtonListOneByOne(buttons, 2000, 0).then(function(response){
+			sendNumberToActionButton(0);
+			LOGGER("Finished find of left panel");
+		});
 	}
 });
 

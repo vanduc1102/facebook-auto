@@ -15,7 +15,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		disableButton(tab);
 		updateNumberOfUsed();
 	} catch(e) {
-		console.log(' Exception on chrome.browserAction.onClicked');
+		console.log('Exception on chrome.browserAction.onClicked');
 	}
 });
 
@@ -32,12 +32,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 		} else {
 			disableButton(tab);
 		}
-
 	} catch(e) {
-		console.log(e)
 		LOGGER(' Exception on chrome.tabs.onUpdated');
 	}
-	createContextMenus(tab);
 	likeYoutubeVideo(tab.url);
 });
 chrome.runtime.onInstalled.addListener(function(details) {
@@ -108,22 +105,18 @@ function genericOnClick(info, tab) {
 
 }
 
-function createFBContextMenus(){
+function createContextMenus(){
 	var rootFbMenu = chrome.contextMenus.create({id:"facebook-auto","title": "Facebook Auto", "contexts":["all"]});
 	chrome.contextMenus.onClicked.addListener(genericOnClick);
 
 	// Create a parent item and two children.
-	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"],"title": "Confirm friend request","parentId": rootFbMenu});
-	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"],"title": "Send friend request","parentId": rootFbMenu});
+	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"],"title": "Confirm friend requests","parentId": rootFbMenu});
+	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"],"title": "Send friend requests","parentId": rootFbMenu});
 	chrome.contextMenus.create({"id":"separator1",type:'separator',"parentId": rootFbMenu});
 	chrome.contextMenus.create({"id":CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"],"title": "Comming soon","parentId": rootFbMenu});
 }
 
-function createContextMenus(tab){
-	if(!isNotFacebook(tab)){
-		createFBContextMenus();
-	}
-}
+createContextMenus();
 
 
 function setBadgeNumber(tab, count) {
@@ -180,12 +173,12 @@ function getDefaultText(tab){
 		return "Like";
 	}
 }
-function isNotFacebook(tab){
+function isFacebook(tab){
 	var url = tab.url;
 	if(url.indexOf(urls[1]) > 1){
 		return true;
 	}
-	return true;
+	return false;
 }
 function isConnect(currentUrl){
 	var urls = ["https://www.linkedin.com/vsearch/","https://www.linkedin.com/people/"];

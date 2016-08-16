@@ -1,4 +1,4 @@
-var DEBUG = true;
+var DEBUG = false;
 function LOGGER(p){
 	if(DEBUG){
 		console.log(p);
@@ -10,8 +10,7 @@ function clickOnButton(button, time, number){
 	setTimeout(function() {
 		// The root of everything
 		number ++;
-		LOGGER("button clicked");
-		
+		LOGGER("button clicked");		
 		button.click();		
 		sendNumberToActionButton(number);
 	    d.resolve(number);
@@ -44,7 +43,7 @@ function loadMoreByScroll(expected){
 
 function clickOnXpathButtonTill(buttonXpath,time,expected){
 	var d = $.Deferred();
-	return clickOnXpathButtonRecursive(buttonXpath,d,time, 0,expected);
+	return clickOnXpathButtonRecursive(buttonXpath,d,time, 1,expected);
 }
 
 function clickOnElementTill(cssSelector,d, times, expected){
@@ -53,8 +52,8 @@ function clickOnElementTill(cssSelector,d, times, expected){
 		return d.promise();
 	}
 	LOGGER("Load more by element  "+ times);
-	times ++;
 	clickOnElementAndWait(cssSelector).then(function(resolve){
+		times ++;
 		clickOnElementTill(cssSelector,d, times , expected);
 	},function(reason){
 		d.resolve();
@@ -98,15 +97,15 @@ function scrollWrapper(d,times,expected){
 	});
 	return d.promise();
 }
-function clickOnXpathButtonRecursive(buttonXpath, d, time, counter, expected){	
+function clickOnXpathButtonRecursive(cssSelector, d, time, counter, expected){	
 	if(counter == expected){
 		d.resolve();
 		return d.promise();
 	}
-	var button = xPath(buttonXpath)[0];
+	var button = $(cssSelector)[0];
 	if(button){
 		clickOnButton(button, time, counter).then(function(counter){
-			clickOnXpathButtonRecursive(buttonXpath, d, time, counter, expected);
+			clickOnXpathButtonRecursive(cssSelector, d, time, counter, expected);
 		});
 	}else{
 		d.resolve();
