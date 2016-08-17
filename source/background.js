@@ -83,7 +83,7 @@ var CONSTANT = {
 }
 
 function genericOnClick(info, tab) {
-  console.log("Cliked : "+ info.menuItemId);
+  LOGGER("Cliked : "+ info.menuItemId);
   switch(info.menuItemId){
   	case CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"]:
   		executeScripts(null, [ 
@@ -91,6 +91,7 @@ function genericOnClick(info, tab) {
 		    { file : "scripts/utils.js" },
 		    { file : "scripts/confirm-friend.js" }
 		]);
+		updateNumberOfUsed();
   		break;
   	case CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"]:
   		executeScripts(null, [ 
@@ -98,11 +99,12 @@ function genericOnClick(info, tab) {
 		    { file : "scripts/utils.js" },
 		    { file : "scripts/request-friend.js" }
 		]);
+		updateNumberOfUsed();
   		break;
   	default:
-  	break;
+  		break;
   }
-
+  
 }
 
 function createContextMenus(){
