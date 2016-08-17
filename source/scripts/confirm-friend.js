@@ -3,7 +3,9 @@ $(function() {
     if(checkLoadMoreAble()){
 	    loadMoreByElement('a[class~="uiMorePagerPrimary"][rel="async"]', 10).then(function(response) {
 	        LOGGER('Done load more page');
-	        var buttons = $(".ruResponseButtons > button");
+	        var buttons = $(".ruResponseButtons > button").filter(function(index){
+	        	return $(this).is(":visible");
+	        });
 	        LOGGER('Number of buttons ' + buttons.length);
 	        clickButtonListOneByOne(buttons, 2000, 0).then(function(response){
 				sendNumberToActionButton(0);
@@ -11,7 +13,9 @@ $(function() {
 			});
 	    });
 	}else{
-		var buttons = $("div#fbRequestsList_wrapper button[name=\"actions[accept]\"]");
+		var buttons = $("div#fbRequestsList_wrapper button[name=\"actions[accept]\"]").filter(function(index){
+			return $(this).is(":visible");
+		});
 	    LOGGER('Number of buttons ' + buttons.length);
 	    clickButtonListOneByOne(buttons, 2000, 0).then(function(response){
 			sendNumberToActionButton(0);
