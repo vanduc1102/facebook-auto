@@ -1,7 +1,7 @@
 $(function(){
 	LOGGER('Send friend request');	
 	if(checkLoadMoreAble()){
-		loadMoreByScroll(5).then(function(response){
+		loadMoreByScroll(null,5).then(function(response){
 			LOGGER('Done load more page');	
 			var buttons = $("li .FriendRequestAdd").filter(function(index){
 				var btn = $(this);

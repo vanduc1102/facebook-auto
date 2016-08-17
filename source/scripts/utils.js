@@ -1,4 +1,4 @@
-var DEBUG = false;
+var DEBUG = true;
 function LOGGER(p){
 	if(DEBUG){
 		console.log(p);
@@ -36,9 +36,9 @@ function loadMoreByElement(cssSelector, expected){
 	return clickOnElementTill(cssSelector,d, 1, expected);
 }
 
-function loadMoreByScroll(expected){
+function loadMoreByScroll(cssSelector,expected){
 	var d = $.Deferred();
-	return scrollWrapper(d,1,expected);
+	return scrollWrapper(cssSelector,d,1,expected);
 }
 
 function clickOnXpathButtonTill(buttonXpath,time,expected){
@@ -80,7 +80,7 @@ function clickOnElementAndWait(cssSelector){
 	return d.promise();
 }
 
-function scrollWrapper(d,times,expected){
+function scrollWrapper(cssSelector,d,times,expected){
 	if(!times){
 		if(expected == 5){
 			d.resolve();
@@ -92,8 +92,8 @@ function scrollWrapper(d,times,expected){
 	}
 	LOGGER("Load more by scroll  "+ times);
 	times ++;
-	scrollToBottom().then(function(resolve){
-		scrollWrapper(d,times,expected);
+	scrollToBottom(cssSelector).then(function(resolve){
+		scrollWrapper(cssSelector,d,times,expected);
 	});
 	return d.promise();
 }
@@ -112,9 +112,14 @@ function clickOnXpathButtonRecursive(cssSelector, d, time, counter, expected){
 	}
 	return d.promise();
 }
-function scrollToBottom(){
+function scrollToBottom(cssSelector){
 	var d = $.Deferred();
-	window.scrollTo(0,document.body.scrollHeight);
+	if(cssSelector){
+		 var element = $(cssSelector).get(0);
+	     element.scrollTop = element.scrollHeight - element.clientHeight;
+	}else{
+		window.scrollTo(0,document.body.scrollHeight);
+	}
 	window.setTimeout(function(){
 		d.resolve();		
 	}, 4000 +  getRandom(1,1000));
