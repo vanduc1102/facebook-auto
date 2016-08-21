@@ -2,9 +2,11 @@
 $(function(){
 	LOGGER('Invite friend request');	
 	if(checkLoadMoreAble()){
-		loadMoreByScroll(".fbProfileBrowserResult.scrollable.hideSummary",5).then(function(response){
+		var scrollSelector = ".fbProfileBrowserResult.scrollable.hideSummary";
+		var buttonSelector = "a.uiButton";
+		loadMoreByScrollWithSelectorCondition(scrollSelector,buttonSelector).then(function(response){
 			LOGGER('Done load more page');	
-			var buttons = $("a.uiButton").filter(function(index){
+			var buttons = $(buttonSelector).filter(function(index){
 				return $(this).is(":visible");
 			});
 			LOGGER('Number of buttons '+ buttons.length);	

@@ -1,4 +1,5 @@
-var DEBUG = true;
+var DEBUG = false;
+var CLICK_BUTTON = true;
 function LOGGER(p){
 	if(DEBUG){
 		console.log(p);
@@ -11,7 +12,9 @@ function clickOnButton(button, time, number){
 		// The root of everything
 		number ++;
 		LOGGER("button clicked");		
-		button.click();		
+		if(!DEBUG && CLICK_BUTTON){
+			button.click();
+		}		
 		sendNumberToActionButton(number);
 	    d.resolve(number);
 	}, time + rand);
@@ -112,6 +115,7 @@ function clickOnXpathButtonRecursive(cssSelector, d, time, counter, expected){
 	}
 	return d.promise();
 }
+
 function scrollToBottom(cssSelector){
 	var d = $.Deferred();
 	if(cssSelector){
@@ -122,6 +126,58 @@ function scrollToBottom(cssSelector){
 	}
 	window.setTimeout(function(){
 		d.resolve();		
+	}, 4000 +  getRandom(1,1000));
+	return d.promise();
+}
+function loadMoreByScrollWithSelectorCondition(scrollSelector,selectorCondition){
+	var d = $.Deferred();
+	return scrollToBottomConditionWrapper(scrollSelector,d,1,selectorCondition);
+}
+
+function scrollToBottomConditionWrapper(scrollbarSelector,d,times,conditionSelector){
+	if(times == 50){
+		LOGGER("Stop scrollToBottomConditionWrapper, cause it reach the maximum.");
+		d.resolve();
+		return d.promise();
+	}
+	LOGGER("Load more by scroll  "+ times);
+	times ++;
+	scrollToBottomCondition(scrollbarSelector , conditionSelector).then(function(resolve){
+		scrollToBottomConditionWrapper(scrollbarSelector,d,times,conditionSelector);
+	},function(reject){
+		d.resolve();
+	});
+	return d.promise();
+}
+
+/*
+* This medthod for scrolling util find nothing more of conditionSelector
+* Example:
+* scrollbarSelector = button container
+* conditionSelector = button
+* The method will stop if it find no more button after scroll.
+*/
+function scrollToBottomCondition(scrollbarSelector, conditionSelector){
+	var d = $.Deferred();
+	var currentElements = $(conditionSelector);
+	if(scrollbarSelector){
+		var element = getFirstElement(scrollbarSelector);
+		if(!element){
+			d.reject();
+		}
+	    element.scrollTop = element.scrollHeight - element.clientHeight;
+	}else{
+		window.scrollTo(0,document.body.scrollHeight);
+	}
+	window.setTimeout(function(){
+		var elementsAfterScroll  = $(conditionSelector);
+		if(elementsAfterScroll.length > currentElements.length){
+			LOGGER("Number of element increase from "+currentElements.length + " to " + elementsAfterScroll.length);
+			d.resolve();		
+		}else{
+			LOGGER("Number of element not change, Stop scroll");
+			d.reject();
+		}
 	}, 4000 +  getRandom(1,1000));
 	return d.promise();
 }
@@ -143,6 +199,9 @@ function getFullUrl(){
 }
 
 function sendNumberToActionButton(number){
+	if(!chrome.runtime){
+		return;
+	}
 	chrome.runtime.sendMessage({count: number}, function(response) {
 		//console.log(response);
 	});  
@@ -173,4 +232,11 @@ function xPath(xpth){
 	    result.push(thisLink);
 	}
 	return result;
+}
+
+function getFirstElement(cssSelector){
+	var elements = $(cssSelector).filter(function(index){
+		return $(this).is(":visible");
+	});
+	return elements.get(0);
 }
