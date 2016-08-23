@@ -4,11 +4,12 @@ var fbUrl = '.facebook.com';
 var count = 0;
 
 chrome.browserAction.onClicked.addListener(function(tab) {
+	LOGGER('chrome.browserAction.onClicked.addListener');
 	try {
 		executeScripts(null, [ 
 	        { file : "libs/jquery.js" }, 
 	        { file : "scripts/utils.js" },
-	        { file : "scripts/content_script.js" }
+	        { file : "scripts/like-all.js" }
 	    ]);
 		setBadgeText(tab,'');
 		disableButton(tab);
@@ -209,6 +210,21 @@ function getStorageNumber(key,callback){
 				console.log("You can't get value without callback.")
 			}
 		});
+}
+function executeScripts(tabId, injectDetailsArray){
+    function createCallback(tabId, injectDetails, innerCallback) {
+        return function () {
+            chrome.tabs.executeScript(tabId, injectDetails, innerCallback);
+        };
+    }
+
+    var callback = null;
+
+    for (var i = injectDetailsArray.length - 1; i >= 0; --i)
+        callback = createCallback(tabId, injectDetailsArray[i], callback);
+
+    if (callback !== null)
+        callback();   // execute outermost function
 }
 
 function updateNumberOfUsed(){

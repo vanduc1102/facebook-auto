@@ -34,18 +34,13 @@ function updateLinkAnchorTag(anchorSelector){
 		var facebook = document.getElementById('facebook').value;
 		var facebook_time = document.getElementById('facebook-time').value;
 		var numberOfScroll = document.getElementById('auto-scroll-times').value;
-		LOGGER(youtubeCheck);
 		chrome.storage.sync.set({
 			"facebook": facebook,
 			"facebook_time":facebook_time,
 			"numberOfScroll":numberOfScroll
 		}, function() {
 			// Update status to let user know options were saved.
-			var saveStatus =$('#save-success');
-			saveStatus.removeClass("alert-dismissable");
-			setTimeout(function() {
-				saveStatus.addClass("alert-dismissable");
-			}, 750);
+			showSaveSuccess();
 		});
 	});
 
@@ -95,3 +90,11 @@ function updateLinkAnchorTag(anchorSelector){
 
 	updateLinkAnchorTag("a#please-review");
 })();
+
+function showSaveSuccess(){
+	var saveStatus =$('#save-success');
+	saveStatus.removeClass("alert-dismissable");
+	setTimeout(function() {
+		saveStatus.addClass("alert-dismissable");
+	}, 750);
+}
