@@ -2,13 +2,5 @@
 	"iconTileFb":{
 		"message":"J'aime tout",
 		"description":"Like all opend posts and comments of Facebook"
-	},
-	"iconTileGp":{
-		"message":"+1 pour tout",
-		"description":"Like all opend posts and comments of Google Plus"
-	},
-	"iconTileTw":{
-		"message":"Favori pour tout",
-		"description":"Like all opend posts and comments of Twitter"
 	}
 }

@@ -11,14 +11,6 @@
 		"message":"Like all",
 		"description":"Like all opend posts and comments of Facebook"
 	},
-	"iconTileGp":{
-		"message":"Plus all",
-		"description":"Like all opend posts and comments of Google Plus"
-	},
-	"iconTileTw":{
-		"message":"Favorite all",
-		"description":"Like all opend posts and comments of Twitter"
-	},
 	"iconTileLike":{
 		"message":"Like",
 		"description":"Like all"

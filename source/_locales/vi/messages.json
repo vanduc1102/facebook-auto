@@ -10,13 +10,5 @@
 	"iconTileFb":{
 		"message":"Thích tất cả",
 		"description":"Cộng 1 tất cả các bài viết và bình luận của Facebook"
-	},
-	"iconTileGp":{
-		"message":"Cộng 1 tất cả",
-		"description":"Cộng 1 tất cả các bài viết và bình luận của Google Plus"
-	},
-	"iconTileTw":{
-		"message":"Thích tất cả",
-		"description":"Cộng 1 tất cả các bài viết và bình luận của Twitter"
 	}
 }
