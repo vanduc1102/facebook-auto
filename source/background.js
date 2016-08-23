@@ -1,7 +1,6 @@
 //The main function.
 LOGGER("Background is running");
-var urls = ['plus.google.com', '.facebook.com', 'twitter.com','instagram.com','linkedin.com','tumblr.com'];
-var youtubeURL = "www.youtube.com/watch";
+var fbUrl = '.facebook.com';
 var count = 0;
 
 chrome.browserAction.onClicked.addListener(function(tab) {
@@ -35,7 +34,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	} catch(e) {
 		LOGGER(' Exception on chrome.tabs.onUpdated');
 	}
-	likeYoutubeVideo(tab.url);
 });
 chrome.runtime.onInstalled.addListener(function(details) {
 	LOGGER("on Installed");
@@ -166,12 +164,7 @@ function setBadgeText(tab, text){
 }
 
 function checkEnable(url) {
-	for (idx in urls) {
-		if (url.indexOf(urls[idx]) > 0) {
-			return true;
-		}
-	}
-	return false;
+	return url.indexOf(fbUrl);
 }
 
 function enableButtonIfNoneText(tab){
@@ -190,50 +183,11 @@ function disableButton(tab){
 	chrome.browserAction.disable(tab.id);	
 }
 function getDefaultText(tab){
-	var url = tab.url;
-	// Goole plus
-	if(url.indexOf(urls[0]) > -1){
-		return "Plus";
-	}else if(isConnect(url)){
-		return "Con.";
-	}else{
-		return "Like";
-	}
+	return "Like";
 }
 function isFacebook(tab){
 	var url = tab.url;
-	if(url.indexOf(urls[1]) > 1){
-		return true;
-	}
-	return false;
-}
-function isConnect(currentUrl){
-	var urls = ["https://www.linkedin.com/vsearch/","https://www.linkedin.com/people/"];
-	var url = urls.find(link => currentUrl.indexOf(link) > -1);
-	return url != undefined;
-}
-function likeYoutubeVideo(url) {
-	chrome.storage.sync.get({
-		"youtube_like" : "false"
-	}, function(cfgData) {
-		LOGGER(cfgData);
-		if (cfgData['youtube_like'] == "true") {
-			if (url.indexOf(youtubeURL) > -1) {
-				LOGGER("You are in youtube watch page");
-				try {
-					executeScripts(null, [ 
-				        { file : "libs/jquery.js" }, 
-				        { file : "scripts/utils.js" },
-				        { file : "scripts/youtube.js" }
-				    ]);
-				} catch(e) {
-					console.log(' Exception on chrome.browserAction.onClicked');
-				}
-			} else {
-				LOGGER("You are in youtube, but not waching page");
-			}
-		}
-	});
+	return url.indexOf(fbUrl);
 }
 
 function setStorageNumber(key,number,callback){
@@ -257,22 +211,6 @@ function getStorageNumber(key,callback){
 		});
 }
 
-function executeScripts(tabId, injectDetailsArray)
-{
-    function createCallback(tabId, injectDetails, innerCallback) {
-        return function () {
-            chrome.tabs.executeScript(tabId, injectDetails, innerCallback);
-        };
-    }
-
-    var callback = null;
-
-    for (var i = injectDetailsArray.length - 1; i >= 0; --i)
-        callback = createCallback(tabId, injectDetailsArray[i], callback);
-
-    if (callback !== null)
-        callback();   // execute outermost function
-}
 function updateNumberOfUsed(){
 	var countNumberFieldName = "count_number";
 	getStorageNumber(countNumberFieldName,function(numberOfUsed){

@@ -31,25 +31,14 @@ function updateLinkAnchorTag(anchorSelector){
 (function(){
 	$("#options" ).on("input focusout",function( event ) {
 		event.preventDefault();
-		var google = document.getElementById('google').value;
-		var google_time = document.getElementById('google-time').value;
 		var facebook = document.getElementById('facebook').value;
 		var facebook_time = document.getElementById('facebook-time').value;
-		var twitter_time = document.getElementById('twitter-time').value;
 		var numberOfScroll = document.getElementById('auto-scroll-times').value;
-		var youtubeCheck = "false";
-		if(document.querySelector('.youtube-like:checked')){
-			youtubeCheck = document.querySelector('.youtube-like:checked').value;			
-		}
 		LOGGER(youtubeCheck);
 		chrome.storage.sync.set({
-			"google": google,
-			"google_time":google_time,
 			"facebook": facebook,
 			"facebook_time":facebook_time,
-			"twitter_time":twitter_time,
-			"numberOfScroll":numberOfScroll,
-			"youtube_like":youtubeCheck
+			"numberOfScroll":numberOfScroll
 		}, function() {
 			// Update status to let user know options were saved.
 			var saveStatus =$('#save-success');
@@ -64,26 +53,14 @@ function updateLinkAnchorTag(anchorSelector){
 	// stored in chrome.storage.
 	document.addEventListener('DOMContentLoaded', function restore_options() {
 		chrome.storage.sync.get({
-			"google": "post",
-			"google_time": 1,
 			"facebook": "post",
 			"facebook_time": 1,
-			"twitter_time":0.8,
 			"numberOfScroll":0,
-			"youtube_like":false,
 			"count_number":1
 		}, function(item) {
-			document.getElementById('google').value =item['google'];
-			document.getElementById('google-time').value =item['google_time'];
 			document.getElementById('facebook').value = item['facebook'];
 			document.getElementById('facebook-time').value = item['facebook_time'];
-			document.getElementById('twitter-time').value = item['twitter_time'];
 			document.getElementById('auto-scroll-times').value = item['numberOfScroll'];
-			if(item['youtube_like'] == 'true'){
-				document.getElementById('youtube-like').checked = true;
-			}else{
-				document.getElementById('youtube-like').checked = false;
-			}
 			updateNumber(item["count_number"]);
 			// console.log(item);
 		});

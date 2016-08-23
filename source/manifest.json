@@ -11,7 +11,8 @@
       "contextMenus",
       "storage",
       "tabs", 
-      "*://*/*"
+      "https://*.facebook.com/*",
+      "http://*.facebook.com/*"
   ],
   "browser_action": {
 		"default_title": "__MSG_appTooltip__",
