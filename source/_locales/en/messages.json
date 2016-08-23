@@ -1,10 +1,10 @@
 {
 	"appDesc": {
-		"message": "Like all opened posts, comments of Facebook, Google Plus, Twitter, Instagram , Linkedin with only one Click", 
+		"message": "Facebook auto is an extension help you saving time for tasks such as like all, post, invite, request, accept, confirm....", 
 		"description":"The description of the application, displayed in the web store."
 	},
 	"appTooltip":{
-		"message":"Like all, Plus all",
+		"message":"Like all",
 		"description":" The tile on browserIcon"
 	},
 	"iconTileFb":{
