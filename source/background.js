@@ -165,7 +165,7 @@ function setBadgeText(tab, text){
 }
 
 function checkEnable(url) {
-	return url.indexOf(fbUrl);
+	return url.indexOf(fbUrl) > -1;
 }
 
 function enableButtonIfNoneText(tab){

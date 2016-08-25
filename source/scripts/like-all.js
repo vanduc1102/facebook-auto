@@ -9,7 +9,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 	  }, function(cfgData) {
 	  	LOGGER(cfgData);
 
-		if(cfgData['numberOfScroll'] > 1 && isScrollable()){
+		if(cfgData['numberOfScroll'] > 1){
 			autoScrollToBottom(cfgData);
 		}else{
 			if(isFacebook() && cfgData['facebook'] == 'both'){
@@ -72,7 +72,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 					LOGGER('Like all post : '+sad_posts.length);
 					break;
 				case 'comment':
-					sad_posts = $("a[data-testid='fb-ufi-unlikelink'][aria-pressed='false'],a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
+					sad_posts = $("a[data-testid='fb-ufi-likelink'][aria-pressed='false'],a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
 					LOGGER('Like all comment : '+sad_posts.length);
 					break;
 				case 'both':
@@ -92,9 +92,6 @@ LOGGER('Content script running........... : '+urlOrigin);
 		var numberOfLikes=sad_posts.length;
 		sendNumberToActionButton(numberOfLikes);
 
-
-		
-
 		function createHappyButtons(sad_posts){
 			var array = []
 			for (var i = 0; i < sad_posts.length; i++) {
@@ -102,7 +99,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 			}
 			return array;
 		}
-		LOGGER(happyBtns);
+		
 		LOGGER(time);
 		
 		happyFn(happyBtns , time);	
