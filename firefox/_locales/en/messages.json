@@ -1,0 +1,18 @@
+{
+	"appDesc": {
+		"message": "Facebook auto is an extension help you saving time for tasks such as like all, post, invite, request, accept, confirm....", 
+		"description":"The description of the application, displayed in the web store."
+	},
+	"appTooltip":{
+		"message":"Like all",
+		"description":" The tile on browserIcon"
+	},
+	"iconTileFb":{
+		"message":"Like all",
+		"description":"Like all opend posts and comments of Facebook"
+	},
+	"iconTileLike":{
+		"message":"Like",
+		"description":"Like all"
+	}
+}

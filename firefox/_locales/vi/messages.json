@@ -1,0 +1,14 @@
+﻿{
+	"appDesc": {
+		"message": "Thích tất cả những bài viết, bình luận đã xem trên Faceook, Google+, Twitter.", 
+		"description":"The description of the application, displayed in the web store."
+	},
+	"appTooltip":{
+		"message":"Thích tất cả",
+		"description":" The tile on browserIcon"
+	},
+	"iconTileFb":{
+		"message":"Thích tất cả",
+		"description":"Cộng 1 tất cả các bài viết và bình luận của Facebook"
+	}
+}

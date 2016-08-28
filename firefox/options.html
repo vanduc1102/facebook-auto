@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Facebook Auto Option</title>
+	<link rel="stylesheet" href="options/style.css" />
+	<script type="text/javascript" src="libs/jquery.js"></script>
+	<script type="text/javascript" src="scripts/utils.js"></script>
+	<script type="text/javascript" src="options/messages.js"></script>
+</head>
+<body>
+	<div class="wrap">
+		<div class="left panel panel-primary">
+			<div class="panel-header">
+				<h2 class="header-title" i18n="msgChooseOption">Choose options</h2>
+			</div>
+			<form id="options" class="panel-body">
+				<div class="panel panel-primary">
+					<div class="panel-header">
+						<h3 class="panel-title">Facebook</h3>
+					</div>
+					<div  class="panel-body">
+						<label for="facebook" i18n="msgLike">Like :</label>
+						<select id="facebook">
+							<option value="post" selected i18n="msgPostFb">post</option>
+							<option value="comment" i18n="msgComment">comment</option>
+							<option value="both" i18n="msgBoth">all</option>
+						</select>
+						<label  for="time" i18n="msgEach">each </label>
+						<input class="timer" type="number" id="facebook-time" value="1.0"  min="1.0" max="5.0" step="0.1"/>
+						<span i18n="msgSecond">seconds</span>
+						
+					</div>
+				</div>
+				<div class="panel panel-primary">
+					<div class="panel-header">
+						<h3 class="panel-title" i18n="msgAll">All</h3>
+					</div>
+					<div class="panel-body">
+						<label  for="time" i18n="msgAutoScrollTitle"> Auto scroll to bottom :</label>
+						<input  class="timer" type="number" id="auto-scroll-times" value="0"  min="0" max="100" step="1"/>
+						<span i18n="msgTime">times</span>
+						
+					</div>
+				</div>
+				<div class="bottom-left">
+				<div id="save-success" class="save-success alert alert-dismissable alert-success">
+					<span i18n="msgSavedSuccessfully">Saved successfully</span>
+				</div>
+				<!-- <button id="save-options" type="submit"  class="btn btn-primary" id="save" i18n="btnSave">Save</button> -->
+				</div>
+			</form>
+		</div>
+		<div id="right-panel" class="right panel panel-primary">
+			<div class="panel-header">
+				<h2 class="header-title" i18n="msgSupsponsor">Give me some Coca Cola</h2>
+			</div>
+			<div class="panel-body">
+			<div class="row">
+				<span class="count-number" i18n="msgCountNumber">You have click on button {0} times.</span>
+				<a href="https://chrome.google.com/webstore/detail/facebook-auto/nanaelgahniepgfhgcppchiehcfehbae/reviews" id="please-review"i18n="msgPleaseReview">Please give me a review</a>
+			</div>
+			<div class="row">
+				<span class="myself" i18n="msgAddicts">I am a Coca Cola addicts.</span>
+			</div>
+			<img class="baby" src="assets/baby-drinking-coke.jpg" height="272px" alt="A baby is drinking coke" />
+			<span class="advice-comment" i18n="msgReason">If you like the extension, You can give me some cans.</span>
+			<table id="slider-table">
+			 <tbody><tr>
+			    <td>&nbsp;</td>
+			    <td>
+			       <div class="instructions" i18n="slide_the_slider">&nbsp;</div>
+			 </td></tr>
+			 <tr>
+			    <td class="big-label" i18n="msgAmount">Amount</td>
+			    <td style="vertical-align: bottom">
+			       <input id="slider" type="range" min="1" max="10" value="1" step="1"><br>
+			    </td>
+			 </tr>
+			 <tr>
+			    <td>&nbsp;</td>
+			    <td id="amt-text-row">
+			       <div id="amt-text" style="padding-left: 0px;">$<span id="amt-text-num">1</span></div>
+			    </td>
+			 </tr>
+			 </tbody>
+			</table>
+			<!-- end slider -->
+			<!-- start paypal -->
+			<form target="paypal" class="paypal-form row" action="https://www.paypal.com/cgi-bin/webscr" method="post" >
+				<input type="hidden" name="cmd" value="_s-xclick">
+				<table>
+				<tr><td><input type="hidden" name="on0" value="Cokes"></td></tr><tr><td>
+				<select id="paypal-choose-price" class="choose-price" name="os0">
+					<option value="2 cans">2 cans $1.00 USD</option>
+					<option value="4 cans">4 cans $2.00 USD</option>
+					<option value="6 cans">6 cans $3.00 USD</option>
+					<option value="8 cans">8 cans $4.00 USD</option>
+					<option value="10 cans">10 cans $5.00 USD</option>
+					<option value="12 cans">12 cans $6.00 USD</option>
+					<option value="14 cans">14 cans $7.00 USD</option>
+					<option value="16 cans">16 cans $8.00 USD</option>
+					<option value="18 cans">18 cans $9.00 USD</option>
+					<option value="20 cans">20 cans $10.00 USD</option>
+				</select>
+				</td></tr>
+				</table>
+				<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+				<input id="paypal-button" i18n="btnSubmitPayPal" class="paypall-submit btn btn-primary" value="Send 2 cans with PayPal" type="submit" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" >
+				<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			</form>
+				<!-- end paypal -->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="options/options.js"></script>
+</body>
+</html>
