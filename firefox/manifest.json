@@ -1,4 +1,10 @@
 {
+  "applications": {
+        "gecko": {
+            "id": "facebook-auto@mozilla.org",
+            "strict_min_version": "48.*"
+        }
+  },
   "name": "Facebook auto",
   "short_name": "FB Auto",
   "description": "__MSG_appDesc__",

@@ -2,7 +2,7 @@ var urlOrigin=window.location.origin;
 var fullUrl = window.location.href;
 LOGGER('Content script running........... : '+urlOrigin);
 (function(){
-	chrome.storage.sync.get({
+	chrome.storage.local.get({
 		"facebook": "post",
 		"facebook_time":"1.0",
 		"numberOfScroll":0
@@ -60,7 +60,7 @@ LOGGER('Content script running........... : '+urlOrigin);
 		}, 4000 +  getRandom(1,1000));
 	}
 	function executeLike(cfgData){
-		var time=0;
+		var time = 0;
 		var sad_posts =[];
 		if(isFacebook()){
 			time = parseFloat(cfgData['facebook_time'])* 1000;		

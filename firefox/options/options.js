@@ -34,7 +34,7 @@ function updateLinkAnchorTag(anchorSelector){
 		var facebook = document.getElementById('facebook').value;
 		var facebook_time = document.getElementById('facebook-time').value;
 		var numberOfScroll = document.getElementById('auto-scroll-times').value;
-		chrome.storage.sync.set({
+		chrome.storage.local.set({
 			"facebook": facebook,
 			"facebook_time":facebook_time,
 			"numberOfScroll":numberOfScroll
@@ -47,7 +47,7 @@ function updateLinkAnchorTag(anchorSelector){
 	// Restores select box and checkbox state using the preferences
 	// stored in chrome.storage.
 	document.addEventListener('DOMContentLoaded', function restore_options() {
-		chrome.storage.sync.get({
+		chrome.storage.local.get({
 			"facebook": "post",
 			"facebook_time": 1,
 			"numberOfScroll":0,
