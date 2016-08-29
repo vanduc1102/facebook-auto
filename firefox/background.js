@@ -159,7 +159,7 @@ createContextMenus(fbUrlParterns);
 
 function setBadgeNumber(tab, count) {
     if (checkEnable(tab.url)) {
-        if (count > 99) {
+        if (count > 999) {
             setBadgeText(tab, '99+');
         } else if (count == 0) {
             setBadgeText(tab, '');
