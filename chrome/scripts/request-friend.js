@@ -37,7 +37,20 @@ if(checkLoadMoreAble()){
 					LOGGER("Finished find friend on Post");
 				});	
 		});
-	}else{
+	}else if(checkIsFriendRefer()){
+		var conditionSelector = "button.FriendRequestAdd.addButton";
+		loadMoreByScrollWithSelectorCondition(null,conditionSelector).then(function(response){
+				var buttons = $("button.FriendRequestAdd.addButton").filter(function(index){
+					return  $(this).is(":visible");
+				});
+				LOGGER('Number of buttons '+ buttons.length);
+				clickButtonListOneByOne(buttons,2000,0).then(function(response){
+					sendNumberToActionButton(0);
+					LOGGER("Finished find friend on Post");
+				});	
+		});
+	}
+	else{
 		var buttonCssSelector = 'div#rightCol div.clearfix.ego_unit button';
 		clickOnXpathButtonTill(buttonCssSelector,3000,100).then(function(response){
 			sendNumberToActionButton(0);
@@ -57,6 +70,11 @@ function checkLoadMoreAble() {
 function checkGroupMememer(){
 	var fullUrl = getFullUrl();
 	return (fullUrl.indexOf("members") > -1 && fullUrl.indexOf("groups") > -1);
+}
+
+function checkIsFriendRefer(){
+	var fullUrl = getFullUrl();
+	return fullUrl.indexOf("source_ref=pb_friends_tl") > 0;
 }
 
 function frLoadMoreByScrollWithSelectorCondition(selectorCondition){

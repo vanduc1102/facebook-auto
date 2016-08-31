@@ -2,7 +2,7 @@
   "name": "Facebook auto",
   "short_name": "FB Auto",
   "description": "__MSG_appDesc__",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "background": {
     "scripts": ["scripts/utils.js","background.js"],
 	  "persistent": false

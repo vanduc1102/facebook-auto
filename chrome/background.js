@@ -149,7 +149,7 @@ function createContextMenus(urlParterns) {
     chrome.contextMenus.create({ "id": "separator1", type: 'separator', "parentId": rootFbMenu , documentUrlPatterns : urlParterns});
     chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["INVITE-FRIEND-PAGE"], "title": "Invite friend on Page", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
     chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["INVITE-FRIEND-EVENT"], "title": "Invite friend on Event", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": "separator1", type: 'separator', "parentId": rootFbMenu , documentUrlPatterns : urlParterns});
+    chrome.contextMenus.create({ "id": "separator2", type: 'separator', "parentId": rootFbMenu , documentUrlPatterns : urlParterns});
     chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"], "title": "Like all", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
     chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["COMMENT"], "title": "Comming soon", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
 }

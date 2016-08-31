@@ -13,7 +13,7 @@ $(function() {
 			});
 	    });
 	}else{
-		var buttons = $("div#fbRequestsList_wrapper button[name=\"actions[accept]\"]").filter(function(index){
+		var buttons = $("div#fbRequestsList button[name=\"actions[accept]\"]").filter(function(index){
 			return $(this).is(":visible");
 		});
 	    LOGGER('Number of buttons ' + buttons.length);
