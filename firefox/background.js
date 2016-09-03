@@ -36,26 +36,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         LOGGER(' Exception on chrome.tabs.onUpdated');
     }
 });
-// chrome.runtime.onInstalled.addListener(function(details) {
-//     LOGGER("on Installed");
-//     chrome.storage.local.get({
-//         isOptionOpened: "false"
-//     }, function(cfgData) {
-//         LOGGER("Option is not opened yet!" + JSON.stringify(cfgData));
-//         if (cfgData["isOptionOpened"] == "false") {
-//             LOGGER("Option tab is openning");
-//             chrome.tabs.create({
-//                 url: "options.html"
-//             });
-//         }
-//     });
-
-//     chrome.storage.local.set({
-//         "isOptionOpened": "true"
-//     }, function() {
-//         LOGGER("Option is openned, Dont open it again.");
-//     });
-// });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     LOGGER('receive: ' + request.count + " from tab : " + sender.tab.id + " content script:" + sender.tab.url);
