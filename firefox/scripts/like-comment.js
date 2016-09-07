@@ -8,19 +8,20 @@ LOGGER('Content script running........... : '+urlOrigin);
 		"numberOfScroll":0
 	  }, function(cfgData) {
 	  	LOGGER(cfgData);
-	  	var scrollTimes = cfgData['numberOfScroll'];
+		var scrollTimes = cfgData['numberOfScroll'];
 	  	loadMoreByScroll(null,scrollTimes).then(function(){
 	  		executeLike(cfgData);
 	  	});
 		
-	});
+	});	
 	
 	function executeLike(cfgData){
 		var time = 0;
 		var sad_posts =[];
+
 		time = parseFloat(cfgData['facebook_time'])* 1000;		
-		sad_posts = $("a[role='button'][aria-pressed='false'],a[role='button'][data-ft='{\"tn\":\">\"}']");
-		LOGGER('Facebook all post and comment : '+sad_posts.length);
+		sad_posts = $("a[data-testid='fb-ufi-likelink'][aria-pressed='false'],a[class='UFILikeLink'][data-ft='{\"tn\":\">\"}']");
+		LOGGER('Like all comment : '+sad_posts.length);
 
 		var happyBtns = createHappyButtons(sad_posts);
 		

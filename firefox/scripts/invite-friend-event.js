@@ -1,36 +1,35 @@
-$(function(){
-	LOGGER('Invite friend request to Event page');
-	if(checkLoadMoreAble()){
-		var scrollSelector = "div.uiScrollableAreaGripper";
-		var buttonSelector = "a[aria-checked=\"false\"][role=\"checkbox\"]";
-		if(checkFormIsOpen()){
-			var scrollContainerElement = $('div.uiScrollableArea').filter(function(item){ return $(this).find('a[role="checkbox"]').length > 0});
-			var containterElement = scrollContainerElement.find("div.uiScrollableAreaTrack");
-			if(containterElement){
-				containterElement.removeClass('invisible_elem');
-				containterElement.css({'opacity':1});
-			}
-			inviteLoadMoreByScrollWithSelectorCondition(scrollContainerElement,scrollSelector,buttonSelector).then(function(response){
-				LOGGER('Done load more page');	
-				var buttons = scrollContainerElement.find(buttonSelector).filter(function(index){
-					return $(this).is(":visible");
-				});
-				LOGGER('Number of buttons '+ buttons.length);	
-				clickButtonListOneByOne(buttons,2000,0).then(function(done){
-					sendNumberToActionButton(0);
-				});	
-			});
-		}else{
-			var buttonCssSelector = 'a[role="button"][ajaxify^="/ajax/events/invite/suggestions/"]';
-			clickOnXpathButtonTill(buttonCssSelector,3000,100).then(function(response){
-				sendNumberToActionButton(0);
-				LOGGER("Finished find of left panel");
-			});
+LOGGER('Invite friend request to Event page');
+if(checkLoadMoreAble()){
+	var scrollSelector = "div.uiScrollableAreaGripper";
+	var buttonSelector = "a[aria-checked=\"false\"][role=\"checkbox\"]";
+	if(checkFormIsOpen()){
+		var scrollContainerElement = $('div.uiScrollableArea').filter(function(item){ return $(this).find('a[role="checkbox"]').length > 0});
+		var containterElement = scrollContainerElement.find("div.uiScrollableAreaTrack");
+		if(containterElement){
+			containterElement.removeClass('invisible_elem');
+			containterElement.css({'opacity':1});
 		}
+		inviteLoadMoreByScrollWithSelectorCondition(scrollContainerElement,scrollSelector,buttonSelector).then(function(response){
+			LOGGER('Done load more page');	
+			var buttons = scrollContainerElement.find(buttonSelector).filter(function(index){
+				return $(this).is(":visible");
+			});
+			LOGGER('Number of buttons '+ buttons.length);	
+			clickButtonListOneByOne(buttons,2000,0).then(function(done){
+				sendNumberToActionButton(0);
+			});	
+		});
 	}else{
-		alert("Please goto your Event page");
+		var buttonCssSelector = 'a[role="button"][ajaxify^="/ajax/events/invite/suggestions/"]';
+		clickOnXpathButtonTill(buttonCssSelector,3000,100).then(function(response){
+			sendNumberToActionButton(0);
+			LOGGER("Finished find of left panel");
+		});
 	}
-});
+}else{
+	alert("Please goto your Event page");
+}
+
 function checkFormIsOpen(){
 	var formSelector = "form[action^=\"/ajax/events/permalink/invite.php\"]";
 	var formSelectorObject  = $(formSelector);

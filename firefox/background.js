@@ -3,40 +3,6 @@ LOGGER("Background is running");
 var fbUrl = '.facebook.com';
 var count = 0;
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-    LOGGER('chrome.browserAction.onClicked.addListener');
-    try {
-        executeScripts(null, [
-            { file: "libs/jquery.js" },
-            { file: "scripts/utils.js" },
-            { file: "scripts/like-all.js" }
-        ]);
-        setBadgeText(tab, '');
-        disableButton(tab);
-        updateNumberOfUsed();
-    } catch (e) {
-        console.log('Exception on chrome.browserAction.onClicked');
-    }
-});
-
-chrome.tabs.onCreated.addListener(function(tab) {
-    LOGGER('chrome.tabs.onCreated.addListener tab.id ' + tab.id + ' ; tab.url ' + tab.url);
-    disableButton(tab);
-});
-
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    LOGGER('chrome.tabs.onUpdated.addListener tab.id ' + tab.id + ' ; tab.url ' + tab.url);
-    try {
-        if (checkEnable(tab.url)) {
-            enableButtonIfNoneText(tab);
-        } else {
-            disableButton(tab);
-        }
-    } catch (e) {
-        LOGGER(' Exception on chrome.tabs.onUpdated');
-    }
-});
-
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     LOGGER('receive: ' + request.count + " from tab : " + sender.tab.id + " content script:" + sender.tab.url);
     if (request.count || request.count == 0) {
@@ -51,12 +17,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         }
     }
 });
+
 var CONSTANT = {
     "FACEBOOK": {
         "MENUS": {
             "CONFIRM-FRIEND": "confirm-friend-request",
             "REQUEST-FRIEND": "send-friend-request",
             "LIKE-ALL": "like-all",
+            "LIKE-POST": "like-post",
+            "LIKE-COMMENT": "like-commnet",
             "INVITE-FRIEND-PAGE": "invite-friend-page",
             "INVITE-FRIEND-EVENT": "invite-friend-event",
             "COMMENT": "comment"
@@ -111,30 +80,52 @@ function genericOnClick(info, tab) {
             ]);
             updateNumberOfUsed();
             break;
+        case CONSTANT["FACEBOOK"]["MENUS"]["LIKE-POST"]:
+            executeScripts(null, [
+                { file: "libs/jquery.js" },
+                { file: "scripts/utils.js" },
+                { file: "scripts/like-post.js" }
+            ]);
+            updateNumberOfUsed();
+            break;
+        case CONSTANT["FACEBOOK"]["MENUS"]["LIKE-COMMENT"]:
+            executeScripts(null, [
+                { file: "libs/jquery.js" },
+                { file: "scripts/utils.js" },
+                { file: "scripts/like-comment.js" }
+            ]);
+            updateNumberOfUsed();
+            break;
         default:
             break;
     }
 
 }
 
-function createContextMenus(urlParterns) {
-	
-
-    var rootFbMenu = chrome.contextMenus.create({ id: "facebook-auto", "title": "Facebook Auto", "contexts": ["all"] , documentUrlPatterns : urlParterns});
+function createContextMenus() {
+    var rootFbMenu = chrome.contextMenus.create({ id: "facebook-auto", "title": "Facebook Auto", "contexts": ["all"]});
     chrome.contextMenus.onClicked.addListener(genericOnClick);
 
     // Create a parent item and two children.
-    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"], "title": "Confirm friend requests", "parentId": rootFbMenu , documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"], "title": "Send friend requests", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": "separator1", type: 'separator', "parentId": rootFbMenu , documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["INVITE-FRIEND-PAGE"], "title": "Invite friend on Page", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["INVITE-FRIEND-EVENT"], "title": "Invite friend on Event", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": "separator1", type: 'separator', "parentId": rootFbMenu , documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"], "title": "Like all", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
-    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["COMMENT"], "title": "Comming soon", "parentId": rootFbMenu ,documentUrlPatterns : urlParterns});
+    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["CONFIRM-FRIEND"], "title": "Confirm friend requests", "parentId": rootFbMenu });
+    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["REQUEST-FRIEND"], "title": "Send friend requests", "parentId": rootFbMenu  });
+    
+	chrome.contextMenus.create({ "id": "separator1", type: 'separator', "parentId": rootFbMenu });
+    
+	chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["INVITE-FRIEND-PAGE"], "title": "Invite friend on Page", "parentId": rootFbMenu  });
+    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["INVITE-FRIEND-EVENT"], "title": "Invite friend on Event", "parentId": rootFbMenu  });
+    
+	chrome.contextMenus.create({ "id": "separator2", type: 'separator', "parentId": rootFbMenu });
+    
+	chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["LIKE-ALL"], "title": "Like all", "parentId": rootFbMenu  });
+    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["LIKE-POST"], "title": "Like post", "parentId": rootFbMenu  });
+    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["LIKE-COMMENT"], "title": "Like comment", "parentId": rootFbMenu  });
+
+    chrome.contextMenus.create({ "id": "separator3", type: 'separator', "parentId": rootFbMenu });
+
+    chrome.contextMenus.create({ "id": CONSTANT["FACEBOOK"]["MENUS"]["COMMENT"], "title": "Comming soon", "parentId": rootFbMenu  });
 }
-var fbUrlParterns = ["https://*.facebook.com/*","http://*.facebook.com/*"];
-createContextMenus(fbUrlParterns);
+createContextMenus();
 
 
 function setBadgeNumber(tab, count) {

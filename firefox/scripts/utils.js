@@ -1,4 +1,4 @@
-var DEBUG = false;
+var DEBUG = true;
 var CLICK_BUTTON = true;
 function LOGGER(p){
 	if(DEBUG){
@@ -93,7 +93,7 @@ function scrollWrapper(cssSelector,d,times,expected){
 		d.resolve();
 		return d.promise();
 	}
-	LOGGER("Load more by scroll  "+ times);
+	LOGGER("scrollWrapper - Load more by scroll  times = "+ times + "; excpeted = "+);
 	times ++;
 	scrollToBottom(cssSelector).then(function(resolve){
 		scrollWrapper(cssSelector,d,times,expected);
@@ -130,6 +130,7 @@ function scrollToBottom(cssSelector){
 	return d.promise();
 }
 function loadMoreByScrollWithSelectorCondition(scrollSelector,selectorCondition){
+	LOGGER("loadMoreByScrollWithSelectorCondition");
 	var d = $.Deferred();
 	return scrollToBottomConditionWrapper(scrollSelector,d,1,selectorCondition);
 }
@@ -140,7 +141,7 @@ function scrollToBottomConditionWrapper(scrollbarSelector,d,times,conditionSelec
 		d.resolve();
 		return d.promise();
 	}
-	LOGGER("Load more by scroll  "+ times);
+	LOGGER("scrollToBottomConditionWrapper - Load more by scroll  "+ times);
 	times ++;
 	scrollToBottomCondition(scrollbarSelector , conditionSelector).then(function(resolve){
 		scrollToBottomConditionWrapper(scrollbarSelector,d,times,conditionSelector);

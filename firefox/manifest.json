@@ -20,14 +20,10 @@
       "https://*.facebook.com/*",
       "http://*.facebook.com/*"
   ],
-  "browser_action": {
-		"default_title": "__MSG_appTooltip__",
-		"default_icon": "assets/icon48.png"
-  },
   "icons": { 
 	  "16": "assets/icon16.png",
-    "48": "assets/icon48.png",
-    "128":"assets/icon128.png" 
+      "48": "assets/icon48.png",
+      "128":"assets/icon128.png" 
   },
    "options_ui": {
         "page": "options.html"
